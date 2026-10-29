@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>光盐居 · 线上博物馆</title>
+  <meta name="description" content="光盐居 litost 的线上博物馆：珠宝篇、绒花与旧藏，作品与设计理念的档案，随时开放，随时更新。">
+  <meta name="theme-color" content="#060606">
+  <meta property="og:title" content="光盐居 · 线上博物馆">
+  <meta property="og:description" content="万物璀璨。作品与设计理念的档案馆。">
+  <meta property="og:image" content="assets/works/dust-4.jpg">
+  <link rel="icon" href="assets/brand/mark.png">
+  <link rel="preload" href="fonts/brush.woff" as="font" type="font/woff" crossorigin>
+  <!-- 网络字体为锦上添花：加载不到（例如国内网络）时自动回落到系统宋体，不阻塞页面 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Noto+Serif+SC:wght@400;600;900&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#hall">跳到展厅</a>
+
+  <header class="nav" id="nav">
+    <a class="nav-brand" href="#top" aria-label="光盐居 · 回到序厅">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="brush nav-name">光盐居</span>
+      <span class="latin nav-latin">litost</span>
+    </a>
+    <nav class="nav-links" aria-label="导览">
+      <a href="#top">序厅</a>
+      <a href="#preface">馆序</a>
+      <a href="#hall">展厅</a>
+      <a href="#visit">来访</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- 壹 · 序厅 -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span class="latin">Online Museum</span> · 线上博物馆</p>
+        <div class="hero-title-row">
+          <h1 id="hero-title" class="brush hero-title">光盐居</h1>
+          <p class="brush hero-motto">万物璀璨</p>
+        </div>
+        <p class="latin hero-latin">litost</p>
+        <p class="hero-lede">作品与设计理念的档案馆。<br>不必挤在货架上，一次看尽所有展品，点开哪一件，就读哪一件的来处。</p>
+        <a class="enter" href="#hall">
+          <span class="brush">入馆</span>
+          <span class="enter-line" aria-hidden="true"></span>
+          <span class="enter-count" id="enter-count"></span>
+        </a>
+      </div>
+      <figure class="hero-figure reveal">
+        <img src="assets/works/dust-4.jpg" alt="若尘：蚕丝绒花与碎钻铺成的花冠，立在黑色支架上" fetchpriority="high">
+        <figcaption><span class="no">No.002</span> 若尘 · 传世花冠</figcaption>
+      </figure>
+      <span class="section-index brush" aria-hidden="true">壹 · 序厅</span>
+    </section>
+
+    <!-- 贰 · 馆序 -->
+    <section class="preface" id="preface" aria-labelledby="preface-title">
+      <span class="section-index brush" aria-hidden="true">贰 · 馆序</span>
+      <header class="section-head reveal">
+        <p class="eyebrow"><span class="latin">Preface</span></p>
+        <h2 id="preface-title" class="section-title">珠宝从来不是奢侈品的代名词，<br>它为照亮世界而生。</h2>
+      </header>
+      <ol class="tenets">
+        <li class="tenet reveal">
+          <span class="tenet-no brush">壹</span>
+          <h3>不以贵贱论</h3>
+          <p>故宫的绒花、古希腊的桂冠、三星堆的神树，都是珠宝换了一种形态。高低、天然或人工、金银或石玉，都不足以定义它。它承载的是艺术的生命，不是占有的欲望。</p>
+        </li>
+        <li class="tenet reveal">
+          <span class="tenet-no brush">贰</span>
+          <h3>抵达更多人</h3>
+          <p>好的创作，应当以尽可能低的价格走进尽可能多的人家。所以光盐居不接高溢价的宝石来料，也不做那一类设计。</p>
+        </li>
+        <li class="tenet reveal">
+          <span class="tenet-no brush">叁</span>
+          <h3>礼赠有缘</h3>
+          <p>缘分比价格要紧：有钱未必买得到，拥有也未必相配。本馆只陈列，不叫卖；绒花、螺钿、织锦、染衣，都是珠宝篇的前奏。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 叁 · 展厅 -->
+    <section class="hall" id="hall" aria-labelledby="hall-title">
+      <span class="section-index brush" aria-hidden="true">叁 · 展厅</span>
+      <header class="section-head hall-head reveal">
+        <div>
+          <p class="eyebrow"><span class="latin">The Hall</span> · <span id="hall-count"></span></p>
+          <h2 id="hall-title" class="section-title">一面墙，看尽所有展品</h2>
+          <p class="hall-intro" id="hall-intro" aria-live="polite"></p>
+        </div>
+        <div class="filters" role="tablist" aria-label="按展厅筛选" id="filters"></div>
+      </header>
+      <ul class="wall" id="wall" aria-label="展品"></ul>
+    </section>
+
+    <!-- 肆 · 来访 -->
+    <section class="visit" id="visit" aria-labelledby="visit-title">
+      <span class="section-index brush" aria-hidden="true">肆 · 来访</span>
+      <div class="visit-inner reveal">
+        <span class="mark mark-lg" aria-hidden="true"></span>
+        <h2 id="visit-title" class="section-title">本馆只陈列，不售卖</h2>
+        <p>想收藏、想按自己的尺寸复刻，或者只是想聊聊某一件作品，请到闲鱼找光盐居。所有沟通与交易都在闲鱼内完成，请勿站外交易。</p>
+        <a class="btn btn-ink" id="shop-link" href="#" target="_blank" rel="noopener">前往闲鱼主页 <span aria-hidden="true">↗</span></a>
+        <p class="brush closing">万古长空　一朝风月</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span class="brush">光盐居</span>
+    <span class="latin">litost</span>
+    <span class="foot-sep" aria-hidden="true">‖</span>
+    <span>作品图片与文字版权归作者所有</span>
+  </footer>
+
+  <!-- 展品详情 -->
+  <dialog class="exhibit" id="exhibit" aria-labelledby="ex-title">
+    <div class="ex-shell">
+      <div class="ex-stage">
+        <div class="ex-track" id="ex-track" tabindex="0" aria-label="作品图片，可左右滑动"></div>
+        <button class="ex-arrow prev" id="ex-prev" type="button" aria-label="上一张">‹</button>
+        <button class="ex-arrow next" id="ex-next" type="button" aria-label="下一张">›</button>
+        <div class="ex-counter" id="ex-counter" aria-live="polite"></div>
+        <div class="ex-thumbs" id="ex-thumbs"></div>
+      </div>
+      <article class="ex-label paper">
+        <span class="mark mark-seal" aria-hidden="true"></span>
+        <p class="ex-meta" id="ex-meta"></p>
+        <p class="ex-series" id="ex-series"></p>
+        <h2 class="ex-title" id="ex-title"></h2>
+        <p class="ex-tags" id="ex-tags"></p>
+        <dl class="ex-facts" id="ex-facts"></dl>
+        <div class="ex-body" id="ex-summary"></div>
+        <section class="ex-note" id="ex-note-wrap" hidden>
+          <h3 class="brush">作者手记</h3>
+          <div class="ex-body" id="ex-note"></div>
+        </section>
+        <p class="ex-credit" id="ex-credit"></p>
+        <div class="ex-actions">
+          <a class="btn btn-paper" id="ex-source" target="_blank" rel="noopener">在闲鱼看原帖 <span aria-hidden="true">↗</span></a>
+        </div>
+        <nav class="ex-walk" aria-label="顺路参观">
+          <button type="button" id="ex-walk-prev"></button>
+          <button type="button" id="ex-walk-next"></button>
+        </nav>
+      </article>
+      <button class="ex-close" id="ex-close" type="button" aria-label="关闭，回到展厅">×</button>
+    </div>
+  </dialog>
+
+  <script src="js/works.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
