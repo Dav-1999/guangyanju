@@ -53,7 +53,9 @@
     b.type = 'button';
     b.style.setProperty('--glow', w.glow || 'var(--ink)');
     b.setAttribute('aria-label', no(i) + ' ' + w.series + ' ' + w.title + '，查看详情');
-    b.appendChild(img(thumb(w.images[0]), full(w.images[0]), ''));
+    var cover = img(thumb(w.images[0]), full(w.images[0]), '');
+    if (w.focus) cover.style.objectPosition = w.focus;
+    b.appendChild(cover);
     b.appendChild(el('span', 'card-glow-dot'));
     var label = el('span', 'card-label');
     label.appendChild(el('span', 'card-no', no(i)));
@@ -181,9 +183,10 @@
     paragraphs($('ex-note'), w.note);
     $('ex-note-wrap').hidden = !(w.note && w.note.trim());
     $('ex-credit').textContent = w.credit || '';
+    // 有原帖链到原帖，没有就链到作者闲鱼主页
     var src = $('ex-source');
-    src.hidden = !w.source;
-    if (w.source) src.href = w.source;
+    src.href = w.source || M.shop;
+    src.firstChild.nodeValue = w.source ? '在闲鱼看原帖 ' : '去闲鱼找作者 ';
 
     track.textContent = '';
     thumbs.textContent = '';

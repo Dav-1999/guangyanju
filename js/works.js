@@ -13,9 +13,12 @@ window.MUSEUM = {
   halls: [
     { id: 'jewel',   name: '珠宝篇', en: 'Jewellery',  status: 'open',
       intro: '典礼、花冠、蓝戒与鸢尾。光盐居的珠宝篇从一则预告开场。' },
-    { id: 'archive', name: '旧藏',   en: 'Archive',    status: 'open',
-      intro: '绒花、虫蝶与发饰。早年流向各地的作品，由收藏者们拍下。' },
-    { id: 'luodian', name: '螺钿',   en: 'Mother-of-pearl', status: 'soon' },
+    { id: 'ronghua', name: '绒花篇', en: 'Velvet Flowers', status: 'open',
+      intro: '绒花在唐代以头饰闻名。光盐居想做的绒花，不只活在历史里，也不只属于女性：新鲜、价格合理，谁都可以戴。' },
+    { id: 'bowu',    name: '博物篇', en: 'Natural History', status: 'open',
+      intro: '蝴蝶、毒花与想象中的生物。拟态造景，按标本的方式陈列。' },
+    { id: 'luodian', name: '螺钿篇', en: 'Mother-of-pearl', status: 'open',
+      intro: '螺钿起于新石器时代，是髹漆工艺的一支。贝壳的光铺在黑色真丝上，接受来图订制。' },
     { id: 'zhijin',  name: '织锦',   en: 'Brocade',    status: 'soon' },
     { id: 'ranyi',   name: '染衣',   en: 'Dyed Garments', status: 'soon' }
   ],
@@ -28,7 +31,8 @@ window.MUSEUM = {
    *   title    作品名
    *   tags     关键词
    *   glow     这件作品的“光色”，展墙悬停与详情页会用到
- *   feature  true 时在展墙上占双倍大小（可选）
+   *   feature  true 时在展墙上占双倍大小（可选）
+ *   focus    展墙封面裁切的重心，如 '25% 50%'（左右 上下），横图主体不在中间时用（可选）
    *   facts    展签上的条目 [名称, 内容]
    *   summary  策展说明
    *   note     作者手记（原文）。留空则不显示，作者可直接把原文贴进来
@@ -37,6 +41,7 @@ window.MUSEUM = {
    *   source   闲鱼原帖链接（可选）
    */
   works: [
+    /* ---------- 珠宝篇 ---------- */
     {
       id: 'overture', hall: 'jewel',
       series: '序曲', title: '珠宝预告',
@@ -99,20 +104,62 @@ window.MUSEUM = {
       source: 'https://www.goofish.com/item?id=1060848890296'
     },
 
-    /* ---------- 旧藏：早年作品，图片为收藏者实拍，作品名为暂名 ---------- */
+    /* ---------- 绒花篇 ---------- */
     {
-      id: 'dragonfly', hall: 'archive',
-      series: '旧藏', title: '蜻蜓',
-      tags: ['胸针', '异形翅', '手书落款'],
+      id: 'lancang', hall: 'ronghua',
+      series: '信物系列', title: '蓝苍',
+      tags: ['陈列品', '信物', '珍藏', '赠礼'],
+      glow: '#2a43c8', focus: '42% 50%',
+      facts: [
+        ['系列', '信物系列 · 光盐居陈列品'],
+        ['用途', '珍藏或赠礼'],
+        ['售卖', '只给一位买家，所见即所得'],
+        ['修复', '视情况长期提供']
+      ],
+      summary:
+        '深蓝花瓣一层层向外翻卷，花心簇着一团米白的蕊。\n' +
+        '信物系列只做珍藏与赠礼。这一朵只给一位买家，拿到手的就是照片里这一朵；日后若有损伤，作者视情况长期修复。',
+      note: '',
+      images: ['works/lancang-1.jpg']
+    },
+    {
+      id: 'envelope', hall: 'ronghua',
+      series: '绒花', title: '红喜事礼金信封',
+      tags: ['荣华', '喜花', '婚礼', '礼金'],
+      glow: '#cf1d2f', focus: '24% 50%',
+      facts: [
+        ['花型', '内五外七，共十二瓣'],
+        ['点缀', '金箔'],
+        ['用法', '花可取下，佩在新娘或宾客身上']
+      ],
+      summary:
+        '绒花谐音“荣华”，向来寓意荣华如意、欣欣向荣。作者想让这层好意头回到今天的礼仪场合，于是把一朵喜花别在了礼金信封上。\n' +
+        '花瓣内五外七，合起来十二瓣，对应一年十二个月。烧箔的颜色留不住，流转出去的版本都改撒金箔。花是活扣固定的，拆下来就能戴在新娘或其他人身上。',
+      note: '',
+      images: ['works/envelope-1.jpg']
+    },
+    {
+      id: 'dragonfly', hall: 'ronghua',
+      series: '旧藏', title: '蓝蜻蜓',
+      tags: ['绒花', '青金石', '光盐居代表色', '胸针'],
       glow: '#2f4fe0', feature: true,
-      facts: [['门类', '胸针'], ['题名', '暂名，待作者题写']],
-      summary: '群青与金橙晕开的翅，有的做成异形翅。每一只都随附一张手书落款，阳光底下会闪。',
+      facts: [
+        ['门类', '胸针'],
+        ['色源', '阿富汗青金石'],
+        ['定色', '比对多块原石与染色蚕丝后，定为深蓝'],
+        ['附件', '手书落款']
+      ],
+      summary:
+        '在光盐居看来，绒花不只是史书里的非遗，也不只属于女性。蓝蜻蜓就是为所有人做的绒花：新鲜，价格合理，谁都可以戴。\n' +
+        '它的颜色取自阿富汗青金石。作者专门比对了一批蓝度不同的原石，在染色蚕丝里试过群青和天蓝，最后定下深蓝。这抹蓝后来又出现在繁星月牙梳、深幽蓝菊、如露睡荷里，成了光盐居的代表色。\n' +
+        '每只蜻蜓都随附一张手书落款。',
+      note: '',
       images: ['archive/dragonfly-3.jpg', 'archive/dragonfly-6.jpg', 'archive/dragonfly-4.jpg',
                'archive/dragonfly-5.jpg', 'archive/dragonfly-1.jpg', 'archive/dragonfly-2.jpg'],
       credit: '图 · 收藏者实拍'
     },
     {
-      id: 'lycoris', hall: 'archive',
+      id: 'lycoris', hall: 'ronghua',
       series: '旧藏', title: '彼岸花',
       tags: ['绒花', '发叉'],
       glow: '#e2552a',
@@ -122,7 +169,7 @@ window.MUSEUM = {
       credit: '图 · 收藏者实拍'
     },
     {
-      id: 'plum', hall: 'archive',
+      id: 'plum', hall: 'ronghua',
       series: '旧藏', title: '红梅',
       tags: ['绒花', '定制'],
       glow: '#c4142f',
@@ -132,17 +179,7 @@ window.MUSEUM = {
       credit: '图 · 收藏者实拍'
     },
     {
-      id: 'gearwing', hall: 'archive',
-      series: '旧藏', title: '机械蝶',
-      tags: ['蝶', '齿轮'],
-      glow: '#3fae6a',
-      facts: [['题名', '暂名，待作者题写']],
-      summary: '翡翠绿的蝶翼，翅脉之间嵌进齿轮与表芯零件。',
-      images: ['archive/gearwing.jpg'],
-      credit: '图 · 收藏者实拍'
-    },
-    {
-      id: 'greenpearl', hall: 'archive',
+      id: 'greenpearl', hall: 'ronghua',
       series: '旧藏', title: '绿萼珠簪',
       tags: ['绒花', '珍珠', '发簪'],
       glow: '#5f8a5a',
@@ -152,34 +189,98 @@ window.MUSEUM = {
       credit: '图 · 收藏者实拍'
     },
     {
-      id: 'bluecomb', hall: 'archive',
-      series: '旧藏', title: '蓝花发梳',
-      tags: ['发梳', '婚礼'],
+      id: 'bluecomb', hall: 'ronghua',
+      series: '旧藏', title: '繁星月牙梳',
+      tags: ['绒花', '发梳', '光盐居代表色', '婚礼'],
       glow: '#3d6cf0',
-      facts: [['门类', '发梳'], ['题名', '暂名，待作者题写']],
-      summary: '钴蓝小花排满一柄发梳，花心点着细碎的亮，多被选作婚礼的赠礼。',
+      facts: [['门类', '发梳'], ['色彩', '蓝蜻蜓定下的深蓝']],
+      summary: '一柄月牙形的发梳，排满深蓝小花，花心点着细碎的亮，像一弯缀满星子的夜。用的正是蓝蜻蜓定下的那抹深蓝。多被选作婚礼的赠礼。',
       images: ['archive/bluecomb.jpg'],
       credit: '图 · 收藏者实拍'
     },
     {
-      id: 'butterfly', hall: 'archive',
-      series: '旧藏', title: '绯蝶',
+      id: 'redbloom', hall: 'ronghua',
+      series: '旧藏', title: '如血',
+      tags: ['绒花', '透明匣'],
+      glow: '#b0182a',
+      facts: [['门类', '绒花 · 透明匣']],
+      summary: '成簇的红花封进透明匣，外面系一段白纱。',
+      images: ['archive/redbloom.jpg'],
+      credit: '图 · 收藏者实拍'
+    },
+
+    /* ---------- 博物篇 ---------- */
+    {
+      id: 'answers', hall: 'bowu',
+      series: '博物系列', title: 'Answers on Her Way',
+      tags: ['拟态造景', '双面蝶', '精微毒花', '君主斑蝶', '夹竹桃'],
+      glow: '#e0782c', feature: true,
+      facts: [
+        ['构成', '拟态造景 + 双面蝶 + 精微毒花'],
+        ['题记', 'In storms folded, In silence gold.']
+      ],
+      summary:
+        '设计对话的第一句就定下了主题：君主斑蝶与夹竹桃毒花之间的共生。\n' +
+        '之后反复推敲的是灵感与意境：花要少做几朵，不必铺满；整体再缩到一半甚至三分之一；叶片要拉长，比例才对。\n' +
+        '玻璃罩下，一只双面蝶停在红色毒花上。光从侧面照进来，蝶与花的影子一起落在墙上。',
+      note: '',
+      images: ['works/answers-1.jpg', 'works/answers-2.jpg']
+    },
+    {
+      id: 'frozen', hall: 'bowu',
+      series: '博物', title: '冷冻蝴蝶',
+      tags: ['黑蝶', '绝对黑色', '凝聚态'],
+      glow: '#9fb4c8',
+      facts: [['门类', '框'], ['题名', '暂名，待作者题写']],
+      summary:
+        '起点是一句对话：想要什么蝴蝶？冷冻的，做成黑色就行。\n' +
+        '作者为它写了一份像异常生物档案的说明：光落到它身上就停住，整只蝶是纯粹的黑，四周浮着光子慢慢逃逸留下的雾影；它的温度永远升不上去，碰到什么就冻住什么，连光也不例外。\n' +
+        '画框里，这只黑蝶停在一片揉皱的银箔上。',
+      note: '',
+      images: ['works/frozen-1.jpg']
+    },
+    {
+      id: 'butterfly', hall: 'bowu',
+      series: '旧藏', title: '血蝶',
       tags: ['蝶', '框'],
       glow: '#c8202b',
-      facts: [['门类', '框'], ['题名', '暂名，待作者题写']],
+      facts: [['门类', '框']],
       summary: '一只绯红的蝶，收进白色画框里。',
       images: ['archive/butterfly.jpg'],
       credit: '图 · 收藏者实拍'
     },
     {
-      id: 'redbloom', hall: 'archive',
-      series: '旧藏', title: '绯花匣',
-      tags: ['绒花', '透明匣'],
-      glow: '#b0182a',
+      id: 'gearwing', hall: 'bowu',
+      series: '旧藏', title: '机械蝶',
+      tags: ['蝶', '齿轮'],
+      glow: '#3fae6a',
       facts: [['题名', '暂名，待作者题写']],
-      summary: '成簇的红花封进透明匣，外面系一段白纱。',
-      images: ['archive/redbloom.jpg'],
+      summary: '翡翠绿的蝶翼，翅脉之间嵌进齿轮与表芯零件。',
+      images: ['archive/gearwing.jpg'],
       credit: '图 · 收藏者实拍'
+    },
+
+    /* ---------- 螺钿篇 ---------- */
+    {
+      id: 'luodian', hall: 'luodian',
+      series: '螺钿画', title: '起舞',
+      tags: ['螺钿', '黑色真丝', '可订制'],
+      glow: '#7fd8cf', feature: true,
+      facts: [
+        ['工艺', '螺钿，髹漆工艺的一支，起于新石器时代'],
+        ['底布', '黑色真丝（也可选黑丝绒）'],
+        ['装裱', '有框'],
+        ['订制', '可来图订制，也可委托作者创作'],
+        ['报价', '按尺寸、繁简、工时，一幅一价'],
+        ['工期', '一个月起'],
+        ['题名', '暂名，待作者题写']
+      ],
+      summary:
+        '贝壳薄片一点点嵌出一位起舞的女子：手臂扬起，裙摆铺开，身上散着细碎的彩光。\n' +
+        '底布是黑色真丝，本身带着暗光；螺钿在上面闪明光，换个角度，颜色就跟着流动。真丝底要手工抽丝缠覆，所以比丝绒底贵一些。\n' +
+        '螺钿画可以挂在家里，也适合送礼。画面可以拿自己的图来订制，也可以交给作者创作，一客一订。',
+      note: '',
+      images: ['works/luodian-1.jpg', 'works/luodian-2.jpg']
     }
   ]
 };
