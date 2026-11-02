@@ -192,7 +192,46 @@ main > section {
 }
 .no { font-family: var(--latin); font-style: italic; letter-spacing: .08em; color: var(--text-dim); }
 
-.hero-open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+/* 主页轮播：四类作品精选 */
+.hc-stage { position: relative; height: min(72svh, 780px); }
+.hc-slide {
+  position: absolute; inset: 0;
+  padding: 0; border: 0; background: none; cursor: zoom-in;
+  opacity: 0; visibility: hidden;
+  transition: opacity 1.2s var(--ease), visibility 0s 1.2s;
+}
+.hc-slide.is-active { opacity: 1; visibility: visible; z-index: 1; transition: opacity 1.2s var(--ease), visibility 0s; }
+.hero-figure .hc-slide img {
+  width: 100%; height: 100%; max-height: none;
+  object-fit: contain;
+  transition: transform .4s var(--ease);
+  -webkit-mask-image: radial-gradient(ellipse 72% 74% at 50% 48%, #000 62%, transparent 100%);
+          mask-image: radial-gradient(ellipse 72% 74% at 50% 48%, #000 62%, transparent 100%);
+}
+.hero-figure .hc-cap {
+  position: static; writing-mode: horizontal-tb;
+  display: grid; justify-items: center; gap: 2px;
+  margin-top: 10px;
+  letter-spacing: normal;
+}
+.hc-cat { font-size: 12px; letter-spacing: .3em; color: var(--text-faint); }
+.hc-title { font-size: 17px; font-weight: 600; letter-spacing: .16em; color: var(--text); }
+.hc-dots { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+.hc-dot { width: 34px; padding: 8px 0; border: 0; background: none; cursor: pointer; }
+.hc-bar { position: relative; display: block; height: 2px; overflow: hidden; background: var(--line-strong); }
+.hc-bar::after {
+  content: ""; position: absolute; inset: 0;
+  background: var(--text); transform: scaleX(0); transform-origin: left;
+}
+.hc-dot.is-active .hc-bar::after { animation: hc-progress 6.5s linear forwards; }
+.hero-carousel.is-paused .hc-dot.is-active .hc-bar::after { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .hc-dot.is-active .hc-bar::after { transform: scaleX(1); }
+}
+@keyframes hc-progress { to { transform: scaleX(1); } }
+
+/* 详情里的展台图：随鼠标轻微转动 */
+.ex-slide.is-stage img { transition: transform .4s var(--ease); }
 .section-head { margin-bottom: clamp(36px, 5vw, 56px); }
 .section-intro { margin: 14px 0 0; color: var(--text-dim); font-size: 15px; }
 
@@ -575,9 +614,8 @@ main > section {
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .hero-figure { order: -1; margin: 0 calc(-1 * var(--gutter)); }
-  .hero-figure img { max-height: 48svh; margin: 0 auto; }
+  .hc-stage { height: 56svh; }
   .hero-title-row { margin-top: -8px; }
-  .hero-figure figcaption { right: var(--gutter); }
   .cats { grid-template-columns: 1fr; }
   .cat-card { min-height: 280px; }
   .cat-head { grid-template-columns: 1fr; gap: 8px; }

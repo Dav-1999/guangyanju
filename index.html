@@ -53,11 +53,14 @@
           <span class="enter-count" id="enter-count"></span>
         </a>
       </div>
-      <figure class="hero-figure reveal">
-        <button type="button" class="hero-open" id="hero-open" aria-label="查看若尘花冠的全部图片">
-          <img src="assets/works/dust-4.jpg" alt="若尘：蚕丝绒花与碎钻铺成的花冠，立在黑色支架上" fetchpriority="high">
-        </button>
-        <figcaption>若尘 · 传世花冠</figcaption>
+      <!-- 四类作品精选轮播（内容在 works.js 的 hero 里改） -->
+      <figure class="hero-figure hero-carousel reveal" id="hero-carousel" aria-roledescription="carousel" aria-label="四类作品精选">
+        <div class="hc-stage" id="hc-stage"></div>
+        <figcaption class="hc-cap" aria-live="polite">
+          <span class="hc-cat" id="hc-cat"></span>
+          <span class="hc-title" id="hc-title"></span>
+        </figcaption>
+        <div class="hc-dots" id="hc-dots" role="tablist" aria-label="选择作品"></div>
       </figure>
       <span class="section-index brush" aria-hidden="true">壹 · 主页</span>
     </section>

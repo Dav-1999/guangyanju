@@ -21,6 +21,26 @@
   };
   var full = function (p) { return 'assets/' + p; };
   var thumb = function (p) { return 'assets/thumbs/' + p.split('/').pop(); };
+  // 有展台图（抠图后放在黑丝绒底上）的作品，用它做封面，并排在图集第一张
+  var coverOf = function (w) { return w.stage || w.images[0]; };
+  var galleryOf = function (w) { return w.stage ? [w.stage].concat(w.images) : w.images; };
+  var canTilt = window.matchMedia('(pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 立体感：鼠标移动时轻微转动（只用于展台图，不改变作品本身）
+  var tilt = function (zone, target) {
+    if (!canTilt) return;
+    zone.addEventListener('pointermove', function (e) {
+      var r = zone.getBoundingClientRect();
+      var dx = (e.clientX - r.left) / r.width - .5;
+      var dy = (e.clientY - r.top) / r.height - .5;
+      (typeof target === 'function' ? target() : target).style.transform =
+        'perspective(1100px) rotateY(' + (dx * 9).toFixed(2) + 'deg) rotateX(' + (-dy * 7).toFixed(2) + 'deg)';
+    });
+    zone.addEventListener('pointerleave', function () {
+      var t = typeof target === 'function' ? target() : target;
+      if (t) t.style.transform = '';
+    });
+  };
   // 正文分段；整行写成【xx】或 #xx# 的显示为小标题
   var paragraphs = function (box, text) {
     box.textContent = '';
@@ -75,8 +95,8 @@
     b.type = 'button';
     b.style.setProperty('--glow', w.glow || 'var(--ink)');
     b.setAttribute('aria-label', [numOf(w), w.series, w.title, w.subtitle].filter(Boolean).join(' ') + '，查看详情');
-    var cover = img(thumb(w.images[0]), full(w.images[0]), '');
-    if (w.focus) cover.style.objectPosition = w.focus;
+    var cover = img(thumb(coverOf(w)), full(coverOf(w)), '');
+    if (w.focus && !w.stage) cover.style.objectPosition = w.focus;
     b.appendChild(cover);
     b.appendChild(el('span', 'card-glow-dot'));
     var label = el('span', 'card-label');
@@ -278,7 +298,7 @@
     $('ex-summary').hidden = !w.summary;
     paragraphs($('ex-note'), w.note);
     $('ex-note-wrap').hidden = !(w.note && w.note.trim());
-    $('ex-credit').textContent = w.credit || '';
+    $('ex-credit').textContent = [w.stage ? '第 1 张为抠图后的展台图' : '', w.credit].filter(Boolean).join('；');
     // 有原帖链到原帖，没有就链到作者闲鱼主页
     var src = $('ex-source');
     src.href = w.source || M.shop;
@@ -286,11 +306,14 @@
 
     track.textContent = '';
     thumbs.textContent = '';
-    w.images.forEach(function (p, k) {
-      var s = el('div', 'ex-slide');
-      s.appendChild(img(full(p), null, w.title + '（第 ' + (k + 1) + ' 张）', k === 0));
+    var gallery = galleryOf(w);
+    gallery.forEach(function (p, k) {
+      var s = el('div', 'ex-slide' + (w.stage && k === 0 ? ' is-stage' : ''));
+      var pic = img(full(p), null, w.title + (w.stage && k === 0 ? '（展台图）' : '（第 ' + (k + 1) + ' 张）'), k === 0);
+      s.appendChild(pic);
+      if (w.stage && k === 0) tilt(s, pic);
       track.appendChild(s);
-      if (w.images.length > 1) {
+      if (gallery.length > 1) {
         var t = el('button');
         t.type = 'button';
         t.setAttribute('aria-label', '第 ' + (k + 1) + ' 张');
@@ -299,7 +322,7 @@
         thumbs.appendChild(t);
       }
     });
-    thumbs.hidden = w.images.length < 2;
+    thumbs.hidden = gallery.length < 2;
     track.scrollLeft = 0;
 
     var peers = c ? inCat(c.id) : [];
@@ -345,7 +368,88 @@
     if (e.key === 'ArrowLeft') { e.preventDefault(); goSlide(slideIndex() - 1); }
     if (e.key === 'ArrowRight') { e.preventDefault(); goSlide(slideIndex() + 1); }
   });
-  $('hero-open').addEventListener('click', function () { lastFocus = this; location.hash = '#/w/dust'; });
+  /* ---------- 主页轮播：四类作品精选 ---------- */
+  (function () {
+    var box = $('hero-carousel');
+    var stageBox = $('hc-stage');
+    var dots = $('hc-dots');
+    var ids = (M.hero || []).filter(function (id) { return byId[id]; });
+    if (!ids.length) { box.hidden = true; return; }
+    var at = 0;
+    var slides = ids.map(function (id, k) {
+      var w = byId[id];
+      var b = el('button', 'hc-slide');
+      b.type = 'button';
+      b.setAttribute('aria-label', [w.title, w.subtitle].filter(Boolean).join(' · ') + '，查看详情');
+      b.appendChild(img(full(coverOf(w)), null, w.title, true));
+      b.addEventListener('click', function () { lastFocus = b; location.hash = '#/w/' + w.id; });
+      stageBox.appendChild(b);
+      var d = el('button', 'hc-dot');
+      d.type = 'button';
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', '第 ' + (k + 1) + ' 件：' + w.title);
+      d.appendChild(el('span', 'hc-bar'));
+      d.addEventListener('click', function () { go(k); });
+      dots.appendChild(d);
+      return b;
+    });
+    // 自动轮播由计时器驱动，进度条动画只负责显示；悬停、聚焦、切到后台时暂停
+    var DUR = 6500;
+    var autoplay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var timer = 0;
+    var startedAt = 0;
+    var remaining = DUR;
+    var holds = { hover: false, focus: false, hidden: document.hidden };
+    var held = function () { return holds.hover || holds.focus || holds.hidden; };
+    var schedule = function () {
+      clearTimeout(timer);
+      if (!autoplay || held()) return;
+      startedAt = Date.now();
+      timer = setTimeout(function () { go((at + 1) % ids.length); }, remaining);
+    };
+    var hold = function (key, on) {
+      var before = held();
+      holds[key] = on;
+      if (!before && held()) { clearTimeout(timer); remaining -= Date.now() - startedAt; }
+      box.classList.toggle('is-paused', held());
+      if (before && !held()) schedule();
+    };
+    var go = function (k) {
+      at = k;
+      var w = byId[ids[k]];
+      var c = catById[w.cat];
+      slides.forEach(function (s, j) {
+        s.classList.toggle('is-active', j === k);
+        s.tabIndex = j === k ? 0 : -1;
+        s.setAttribute('aria-hidden', j === k ? 'false' : 'true');
+      });
+      Array.prototype.forEach.call(dots.children, function (d, j) {
+        d.classList.remove('is-active');
+        d.setAttribute('aria-selected', j === k ? 'true' : 'false');
+      });
+      void dots.offsetWidth;  // 重新触发进度条动画
+      dots.children[k].classList.add('is-active');
+      $('hc-cat').textContent = c ? [c.name, groupName(w)].filter(Boolean).join(' · ') : (w.series || '');
+      $('hc-title').textContent = [w.title, w.subtitle].filter(Boolean).join(' · ');
+      remaining = DUR;
+      schedule();
+    };
+    box.addEventListener('pointerenter', function () { hold('hover', true); });
+    box.addEventListener('pointerleave', function () { hold('hover', false); });
+    box.addEventListener('focusin', function () { hold('focus', true); });
+    box.addEventListener('focusout', function () { hold('focus', false); });
+    document.addEventListener('visibilitychange', function () { hold('hidden', document.hidden); });
+    var x0 = null;
+    stageBox.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    stageBox.addEventListener('touchend', function (e) {
+      if (x0 == null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) > 40) go((at + (dx < 0 ? 1 : ids.length - 1)) % ids.length);
+    });
+    tilt(stageBox, function () { return stageBox.querySelector('.hc-slide.is-active img'); });
+    go(0);
+  })();
 
   /* ---------- 路由 ---------- */
   var route = function (fromPage) {

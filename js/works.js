@@ -12,6 +12,9 @@ window.MUSEUM = {
   // 闲鱼主页：所有咨询与交易都回到闲鱼内完成
   shop: 'https://www.goofish.com/personal?userId=2218677361208',
 
+  // 主页轮播 · 四类作品精选（按顺序轮播，改 id 即可）
+  hero: ['xiuqiu', 'ningye', 'lushen', 'luodian', 'dust'],
+
   // 次页 · 作品节选（作者还没定，先放这几件，改 id 即可）
   featured: ['dust', 'xiuqiu', 'junzhu', 'ningye', 'luodian', 'feihuang', 'lushen', 'fanxing', 'mao'],
 
@@ -25,7 +28,7 @@ window.MUSEUM = {
   categories: [
     {
       id: 'ronghua', name: '绒花', en: 'Velvet Flowers', status: 'open',
-      cover: 'works/xiuqiu-1.jpg',
+      cover: 'works/xiuqiu-1-stage.jpg',
       intro: '蚕丝与铜丝，一瓣一瓣搓出来的花、蝶与小物。',
       about:
         '绒花在唐代以头饰闻名。光盐居想做的绒花，不只活在历史里，也不只属于女性：新鲜、价格合理，谁都可以戴。',
@@ -38,7 +41,7 @@ window.MUSEUM = {
     },
     {
       id: 'zhijin', name: '织锦画', en: 'Brocade', status: 'open',
-      cover: 'works/lushen-1.jpg',
+      cover: 'works/lushen-1-stage.jpg',
       intro: '挑出有意思的织纹，裱成框画。浮光跃金，绚烂瑰丽。',
       about:
         '织锦取桑蚕丝为主料，辅以其他特殊工艺。收集东方锦料样本的时候，会挑选其中比较有意思的织纹，一部分裱成框画留作参考。\n' +
@@ -76,7 +79,8 @@ window.MUSEUM = {
    *   facts     展签条目 [名称, 内容]
    *   summary   正文，\n 分段；整行写成【xx】或 #xx# 会显示为小标题
    *   images    图片路径（相对 assets/），第一张是封面
-   *   credit    图片来源说明；source 闲鱼原帖链接
+ *   stage     展台图（抠图后放在黑丝绒底上），有它时做封面、并排在图集第一张
+   *   credit    图片来源说明（有展台图时，第 1 张是展台图，原图从第 2 张起）；source 闲鱼原帖链接
    */
   works: [
     /* ---------- 主页花冠：珠宝篇待定，只保留图片 ---------- */
@@ -91,6 +95,7 @@ window.MUSEUM = {
     /* ================= 绒花 · 绒绒萌物 ================= */
     {
       id: 'mao', cat: 'ronghua', group: 'mengwu',
+      stage: 'works/mao-1-stage.jpg',
       title: '一抹红妆', subtitle: '红梅猫咪',
       tags: ['红梅', '猫咪', '冰箱贴', '新年礼物'],
       glow: '#d0152b',
@@ -101,10 +106,11 @@ window.MUSEUM = {
         '礼物版原设计中圣诞礼物有冬青果、圣诞树和东巴纸信封，万圣礼物有小南瓜和幽灵喔。\n' +
         '最终选了此版本作为2024年新年礼物，感兴趣的话可以联系店铺问问哈。',
       images: ['works/mao-1.jpg', 'archive/plum-1.jpg', 'archive/plum-2.jpg'],
-      credit: '第 2、3 张为收藏者实拍'
+      credit: '第 3、4 张为收藏者实拍'
     },
     {
       id: 'caomei', cat: 'ronghua', group: 'mengwu',
+      stage: 'works/caomei-1-stage.jpg',
       title: '甜心莓莓', subtitle: '粉绿草莓',
       tags: ['草莓', '发卡', '盆栽', '水果合集'],
       glow: '#e8708a',
@@ -129,15 +135,17 @@ window.MUSEUM = {
     /* ================= 绒花 · 幻羽蝶变 ================= */
     {
       id: 'cuifeng', cat: 'ronghua', group: 'huanyu',
+      stage: 'works/cuifeng-1-stage.jpg',
       title: '绿带翠凤蝶',
       tags: ['蝴蝶', '框'],
       glow: '#3fae6a',
       summary: '翡翠绿的蝶翼，翅脉之间嵌进齿轮与表芯零件，收在暗纹黑框里。',
       images: ['works/cuifeng-1.jpg', 'archive/gearwing.jpg'],
-      credit: '第 2 张为收藏者实拍'
+      credit: '第 3 张为收藏者实拍'
     },
     {
       id: 'lanjixie', cat: 'ronghua', group: 'huanyu',
+      stage: 'works/lanjixie-1-stage.jpg',
       title: '蓝机械蝶',
       tags: ['蝴蝶', '机械', '框'],
       glow: '#2fa3d8',
@@ -146,6 +154,7 @@ window.MUSEUM = {
     },
     {
       id: 'haigu', cat: 'ronghua', group: 'huanyu',
+      stage: 'works/frozen-1-stage.jpg',
       title: '黑色骸骨',
       tags: ['黑蝶', '绝对黑色', '凝聚态'],
       glow: '#9fb4c8',
@@ -172,12 +181,13 @@ window.MUSEUM = {
     },
     {
       id: 'xueyi', cat: 'ronghua', group: 'huanyu',
+      stage: 'works/butterfly-stage.jpg',
       title: '血漪蛱蝶',
       tags: ['蝴蝶', '框'],
       glow: '#c8202b',
       summary: '一只绯红的蛱蝶，收进白色画框里。',
       images: ['archive/butterfly.jpg'],
-      credit: '图 · 收藏者实拍'
+      credit: '原图为收藏者实拍'
     },
     {
       id: 'ruxue', cat: 'ronghua', group: 'huanyu',
@@ -210,6 +220,7 @@ window.MUSEUM = {
     /* ================= 绒花 · 繁花世界 ================= */
     {
       id: 'rulu', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/rulu-1-stage.jpg',
       series: '信物系列', title: '如露', subtitle: '浅蓝睡荷',
       tags: ['睡荷', '珍珠', '光盐居代表色'],
       glow: '#2c59d8',
@@ -218,6 +229,7 @@ window.MUSEUM = {
     },
     {
       id: 'lancang', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/lancang-1-stage.jpg',
       series: '信物系列', title: '蓝苍', subtitle: '深幽蓝菊',
       tags: ['陈列品', '珍藏', '赠礼'],
       glow: '#2a43c8',
@@ -233,6 +245,7 @@ window.MUSEUM = {
     },
     {
       id: 'ningye', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/ningye-1-stage.jpg',
       series: '信物系列', title: '凝夜', subtitle: '深紫蝴蝶兰',
       tags: ['蝴蝶兰', '银紫', '深夜观赏'],
       glow: '#7a4fd0',
@@ -245,6 +258,7 @@ window.MUSEUM = {
     },
     {
       id: 'yuanwei', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/yuanwei-1-stage.jpg',
       title: '斑斓鸢尾',
       tags: ['鸢尾', '油画色', '框'],
       glow: '#7a62d8',
@@ -266,6 +280,7 @@ window.MUSEUM = {
     },
     {
       id: 'baihe', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/baihe-1-stage.jpg',
       title: '粉黛幻影', subtitle: '百合',
       tags: ['百合', '浅色蚕丝', '捧花'],
       glow: '#e07aa0',
@@ -284,6 +299,7 @@ window.MUSEUM = {
     },
     {
       id: 'xiuqiu', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/xiuqiu-1-stage.jpg',
       series: '博物系列', title: '仲夏夜之梦', subtitle: '九色绣球',
       tags: ['绣球', '九色渐变', '婚纱', '芭蕾'],
       glow: '#8fb8e8', feature: true,
@@ -326,6 +342,7 @@ window.MUSEUM = {
     },
     {
       id: 'envelope', cat: 'ronghua', group: 'xingli',
+      stage: 'works/envelope-1-stage.jpg',
       series: '红喜事', title: '烧箔信封', subtitle: '礼金信封',
       tags: ['荣华', '喜花', '婚礼', '礼金'],
       glow: '#cf1d2f', focus: '42% 50%',
@@ -346,15 +363,17 @@ window.MUSEUM = {
     },
     {
       id: 'feihuang', cat: 'ronghua', group: 'xingli',
+      stage: 'works/feihuang-1-stage.jpg',
       series: '红喜事', title: '飞凰引', subtitle: '金凤钗',
       tags: ['彼岸花', '金钗', '婚礼'],
       glow: '#e2552a', feature: true,
       summary: '朱红与橙黄层层叠起，花蕊细长外放，簪在一柄金色发叉上。',
       images: ['works/feihuang-1.jpg', 'works/feihuang-2.jpg', 'archive/lycoris.jpg'],
-      credit: '第 3 张为收藏者实拍'
+      credit: '第 4 张为收藏者实拍'
     },
     {
       id: 'jiuxiao', cat: 'ronghua', group: 'xingli',
+      stage: 'works/jiuxiao-1-stage.jpg',
       series: '红喜事 · 细绒条', title: '九霄凤翎', subtitle: '信物系列之九霄',
       tags: ['凤翎', '青金石', '淡水珍珠', '可订制'],
       glow: '#2f4fe0',
@@ -373,6 +392,7 @@ window.MUSEUM = {
     },
     {
       id: 'lieyan', cat: 'ronghua', group: 'xingli',
+      stage: 'works/lieyan-1-stage.jpg',
       series: '红喜事 · 细绒条', title: '烈焰红丝绒',
       tags: ['细绒条', '红花'],
       glow: '#d4202a',
@@ -427,6 +447,7 @@ window.MUSEUM = {
     },
     {
       id: 'aletai', cat: 'ronghua', group: 'xingli',
+      stage: 'works/aletai-1-stage.jpg',
       series: '宜室宜家', title: '阿勒泰的秋',
       tags: ['秋叶', '渐变'],
       glow: '#d9a03a',
@@ -466,6 +487,7 @@ window.MUSEUM = {
     },
     {
       id: 'lushen', cat: 'zhijin', group: 'zhijin',
+      stage: 'works/lushen-1-stage.jpg',
       title: '林深见鹿', subtitle: '大画幅',
       tags: ['鹿', '螺钿彩线', '挂画'],
       glow: '#d9a640', feature: true,
