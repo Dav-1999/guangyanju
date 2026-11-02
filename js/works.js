@@ -17,7 +17,7 @@ window.MUSEUM = {
   hero: ['dust', 'xiuqiu', 'ningye', 'lushen', 'luodian'],
 
   // 次页 · 作品节选（作者还没定，先放这几件，改 id 即可）
-  featured: ['dust', 'xiuqiu', 'junzhu', 'ningye', 'luodian', 'feihuang', 'lushen', 'fanxing', 'mao'],
+  featured: ['dust', 'xiuqiu', 'ruxue', 'ningye', 'luodian', 'feihuang', 'lushen', 'fanxing', 'mao'],
 
   /*
    * 前奏曲 · 四个门类
