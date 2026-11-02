@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>光盐居 · 线上博物馆</title>
-  <meta name="description" content="光盐居 litost 的线上博物馆：绒花、织锦画、草木染坊、漆钿，作品与设计理念的档案，随时开放，随时更新。">
+  <meta name="description" content="光盐居 litost 的线上博物馆：绒花、织锦画、螺钿画的作品图片与创作说明。">
   <meta name="theme-color" content="#060606">
   <meta property="og:title" content="光盐居 · 线上博物馆">
-  <meta property="og:description" content="万物璀璨。作品与设计理念的档案馆。">
+  <meta property="og:description" content="万物璀璨。光盐居的绒花、织锦画与螺钿画。">
   <meta property="og:image" content="assets/works/dust-4.jpg">
   <link rel="icon" href="assets/brand/mark.png">
   <link rel="preload" href="fonts/brush.woff" as="font" type="font/woff" crossorigin>
@@ -31,7 +31,7 @@
       <a href="#top">主页</a>
       <a href="#selection">节选</a>
       <a href="#qianzou">前奏曲</a>
-      <a href="#visit">来访</a>
+      <a href="#visit">联系</a>
     </nav>
   </header>
 
@@ -39,22 +39,22 @@
   <main id="home">
     <!-- A · 光盐居 -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero-copy reveal">
+      <div class="hero-copy">
         <p class="eyebrow"><span class="latin">Online Museum</span> · 线上博物馆</p>
         <div class="hero-title-row">
           <h1 id="hero-title" class="brush hero-title">光盐居</h1>
           <p class="brush hero-motto">万物璀璨</p>
         </div>
         <p class="latin hero-latin">litost</p>
-        <p class="hero-lede">作品与设计理念的档案馆。<br>绒花、织锦、草木染、漆钿，一次看尽；点开哪一类，就逛哪一类，点开哪一件，就读哪一件的来处。</p>
+        <p class="hero-lede">光盐居的作品，和做它们时的想法。<br>现有绒花、织锦画、螺钿画三类，草木染坊还在筹备。</p>
         <a class="enter" href="#selection">
           <span class="brush">入馆</span>
           <span class="enter-line" aria-hidden="true"></span>
           <span class="enter-count" id="enter-count"></span>
         </a>
       </div>
-      <!-- 四类作品精选轮播（内容在 works.js 的 hero 里改） -->
-      <figure class="hero-figure hero-carousel reveal" id="hero-carousel" aria-roledescription="carousel" aria-label="四类作品精选">
+      <!-- 作品轮播（内容在 works.js 的 hero 里改） -->
+      <figure class="hero-figure hero-carousel" id="hero-carousel" aria-roledescription="carousel" aria-label="作品轮播">
         <div class="hc-stage" id="hc-stage"></div>
         <figcaption class="hc-cap" aria-live="polite">
           <span class="hc-cat" id="hc-cat"></span>
@@ -71,29 +71,29 @@
       <header class="section-head reveal">
         <p class="eyebrow"><span class="latin">Selected Works</span></p>
         <h2 id="selection-title" class="section-title">作品节选</h2>
-        <p class="section-intro">从各个门类里挑出的几件，先看个大概。</p>
+        <p class="section-intro">挑了几件摆在这里，点开能看大图和说明。</p>
       </header>
       <ul class="wall" id="featured" aria-label="作品节选"></ul>
     </section>
 
-    <!-- C · 前奏曲：四大门类 -->
+    <!-- C · 前奏曲：四个门类 -->
     <section class="qianzou" id="qianzou" aria-labelledby="qianzou-title">
       <span class="section-index brush" aria-hidden="true">叁 · 前奏曲</span>
       <header class="section-head reveal">
-        <p class="eyebrow"><span class="latin">Prelude</span> · 四大门类</p>
+        <p class="eyebrow"><span class="latin">Prelude</span> · 四个门类</p>
         <h2 id="qianzou-title" class="section-title">前奏曲</h2>
-        <p class="section-intro">点开哪一类，就看哪一类。</p>
+        <p class="section-intro">按手艺分成四个门类。</p>
       </header>
-      <ul class="cats" id="cats" aria-label="四大门类"></ul>
+      <ul class="cats" id="cats" aria-label="四个门类"></ul>
     </section>
 
-    <!-- 来访 -->
+    <!-- 联系 -->
     <section class="visit" id="visit" aria-labelledby="visit-title">
-      <span class="section-index brush" aria-hidden="true">肆 · 来访</span>
+      <span class="section-index brush" aria-hidden="true">肆 · 联系</span>
       <div class="visit-inner reveal">
         <span class="mark mark-lg" aria-hidden="true"></span>
-        <h2 id="visit-title" class="section-title">本馆只陈列，不售卖</h2>
-        <p>想收藏、想按自己的尺寸复刻，或者只是想聊聊某一件作品，请到闲鱼找光盐居。所有沟通与交易都在闲鱼内完成，请勿站外交易。</p>
+        <h2 id="visit-title" class="section-title">本馆不直接售卖</h2>
+        <p>想收藏、想订制，或者只是想聊聊哪件作品，请到闲鱼找光盐居。沟通和交易请都留在闲鱼上。</p>
         <a class="btn btn-ink" id="shop-link" href="#" target="_blank" rel="noopener">前往闲鱼主页 <span aria-hidden="true">↗</span></a>
         <p class="brush closing">万古长空　一朝风月</p>
       </div>
@@ -123,7 +123,7 @@
     <span class="brush">光盐居</span>
     <span class="latin">litost</span>
     <span class="foot-sep" aria-hidden="true">‖</span>
-    <span>作品图片与文字版权归作者所有</span>
+    <span>作品与文字版权归光盐居所有，收藏者实拍图归拍摄者</span>
   </footer>
 
   <!-- 展品详情 -->
@@ -136,7 +136,7 @@
         <div class="ex-counter" id="ex-counter" aria-live="polite"></div>
         <div class="ex-thumbs" id="ex-thumbs"></div>
       </div>
-      <article class="ex-label paper">
+      <article class="ex-label">
         <span class="mark mark-seal" aria-hidden="true"></span>
         <p class="ex-meta" id="ex-meta"></p>
         <p class="ex-series" id="ex-series"></p>
@@ -151,7 +151,7 @@
         </section>
         <p class="ex-credit" id="ex-credit"></p>
         <div class="ex-actions">
-          <a class="btn btn-paper" id="ex-source" target="_blank" rel="noopener">在闲鱼看原帖 <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" id="ex-source" target="_blank" rel="noopener">在闲鱼看原帖 <span aria-hidden="true">↗</span></a>
         </div>
         <nav class="ex-walk" id="ex-walk" aria-label="顺路参观">
           <button type="button" id="ex-walk-prev"></button>

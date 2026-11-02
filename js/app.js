@@ -24,22 +24,64 @@
   // 有展台图（抠图后放在黑丝绒底上）的作品，用它做封面，并排在图集第一张
   var coverOf = function (w) { return w.stage || w.images[0]; };
   var galleryOf = function (w) { return w.stage ? [w.stage].concat(w.images) : w.images; };
-  var canTilt = window.matchMedia('(pointer: fine)').matches &&
-    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // 立体感：鼠标移动时轻微转动（只用于展台图，不改变作品本身）
-  var tilt = function (zone, target) {
-    if (!canTilt) return;
-    zone.addEventListener('pointermove', function (e) {
-      var r = zone.getBoundingClientRect();
-      var dx = (e.clientX - r.left) / r.width - .5;
-      var dy = (e.clientY - r.top) / r.height - .5;
-      (typeof target === 'function' ? target() : target).style.transform =
-        'perspective(1100px) rotateY(' + (dx * 9).toFixed(2) + 'deg) rotateX(' + (-dy * 7).toFixed(2) + 'deg)';
+  /* ---------- 分层视差（立体感） ----------
+   * 有透明底主体层（cut）的作品，展台由四层组成：底光、地面、投影、主体。
+   * 每个“视差区”上有 --px / --py 两个变量（-1～1），各层按不同幅度响应，于是有了纵深。
+   * 鼠标在区内时跟随鼠标；否则（包括手机）缓慢自动摆动；系统要求减少动态时完全静止。 */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(pointer: fine)').matches;
+  var zones = [];
+  var addZone = function (node) {
+    var z = { el: node, px: 0, py: 0, tx: 0, ty: 0, hover: false, phase: zones.length * 1.7 };
+    if (finePointer) {
+      node.addEventListener('pointermove', function (e) {
+        var r = node.getBoundingClientRect();
+        z.tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - .5) * 2));
+        z.ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - .5) * 2));
+        z.hover = true;
+      });
+      node.addEventListener('pointerleave', function () { z.hover = false; });
+    }
+    zones.push(z);
+  };
+  var zoneLive = function (z) {
+    var node = z.el;
+    var slide = node.closest('.hc-slide');
+    if (slide && !slide.classList.contains('is-active')) return false;
+    if (node.closest('dialog') && !node.closest('dialog').open) return false;
+    var r = node.getBoundingClientRect();
+    return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+  };
+  var parallax = function (t) {
+    zones = zones.filter(function (z) { return z.el.isConnected; });
+    zones.forEach(function (z) {
+      if (!zoneLive(z)) return;
+      var gx = z.hover ? z.tx : Math.sin(t / 2600 + z.phase) * .75;
+      var gy = z.hover ? z.ty : Math.cos(t / 3400 + z.phase) * .5;
+      z.px += (gx - z.px) * .07;
+      z.py += (gy - z.py) * .07;
+      z.el.style.setProperty('--px', z.px.toFixed(3));
+      z.el.style.setProperty('--py', z.py.toFixed(3));
     });
-    zone.addEventListener('pointerleave', function () {
-      var t = typeof target === 'function' ? target() : target;
-      if (t) t.style.transform = '';
-    });
+    requestAnimationFrame(parallax);
+  };
+  if (!reduceMotion) requestAnimationFrame(parallax);
+  // 展台：底光 + 地面 + 投影（同一张抠图压黑、模糊）+ 主体
+  var makeStage = function (w, eager) {
+    var box = el('div', 'stage3d');
+    box.appendChild(el('div', 's3-light'));
+    // 地面光、投影、主体放在同一个容器里，容器大小跟着主体走，地面光始终贴在作品下方
+    var obj = el('div', 's3-obj');
+    obj.appendChild(el('div', 's3-floor'));
+    var shadow = img(full(w.cut), null, '', eager);
+    shadow.className = 's3-shadow';
+    shadow.setAttribute('aria-hidden', 'true');
+    var subject = img(full(w.cut), null, w.title + '（展台合成图）', eager);
+    subject.className = 's3-subject';
+    obj.appendChild(shadow);
+    obj.appendChild(subject);
+    box.appendChild(obj);
+    return box;
   };
   // 正文分段；整行写成【xx】或 #xx# 的显示为小标题
   var paragraphs = function (box, text) {
@@ -84,7 +126,7 @@
     return g ? g.name : '';
   };
 
-  $('enter-count').textContent = '共 ' + listed.length + ' 件作品 · 四大门类';
+  $('enter-count').textContent = '共 ' + listed.length + ' 件作品';
   $('shop-link').href = M.shop;
 
   /* ---------- 作品卡片 ---------- */
@@ -100,7 +142,7 @@
     b.appendChild(cover);
     b.appendChild(el('span', 'card-glow-dot'));
     var label = el('span', 'card-label');
-    label.appendChild(el('span', 'card-no', numOf(w) || '主页'));
+    if (numOf(w)) label.appendChild(el('span', 'card-no', numOf(w)));
     if (w.series) label.appendChild(el('span', 'card-series', w.series));
     var title = el('span', 'card-title', w.title);
     if (w.subtitle) title.appendChild(el('small', null, w.subtitle));
@@ -120,7 +162,7 @@
     if (byId[id]) featuredBox.appendChild(card(byId[id], k === 0));
   });
 
-  /* ---------- 主页：前奏曲四大门类 ---------- */
+  /* ---------- 主页：前奏曲四个门类 ---------- */
   var catsBox = $('cats');
   cats.forEach(function (c, k) {
     var li = el('li');
@@ -132,12 +174,12 @@
       cv.className = 'cat-cover';
       a.appendChild(cv);
     }
-    a.appendChild(el('span', 'cat-no brush', ['壹', '贰', '叁', '肆', '伍', '陆'][k] || ''));
+    a.appendChild(el('span', 'cat-no latin', String(k + 1).padStart(2, '0')));
     var body = el('span', 'cat-body');
     body.appendChild(el('span', 'cat-name brush', c.name));
     body.appendChild(el('span', 'cat-en latin', c.en));
     body.appendChild(el('span', 'cat-intro', c.intro || ''));
-    var meta = c.status === 'soon' ? '栏目筹备中'
+    var meta = c.status === 'soon' ? '筹备中'
       : (c.groups || []).map(function (g) { return g.name; }).join(' · ') + '　' + n + ' 件';
     body.appendChild(el('span', 'cat-meta', meta));
     a.appendChild(body);
@@ -164,8 +206,7 @@
 
     if (c.status === 'soon' || !(c.groups || []).length) {
       var empty = el('div', 'cat-empty');
-      empty.appendChild(el('span', 'brush', c.name));
-      empty.appendChild(el('p', null, c.intro || '栏目筹备中。'));
+      empty.appendChild(el('p', null, '这里还空着。'));
       groupsBox.appendChild(empty);
     }
     (c.groups || []).forEach(function (g) {
@@ -276,7 +317,8 @@
     var meta = $('ex-meta');
     meta.textContent = '';
     if (numOf(w)) meta.appendChild(el('span', 'no', numOf(w)));
-    meta.appendChild(document.createTextNode((numOf(w) ? '　' : '') + (c ? [c.name, groupName(w)].filter(Boolean).join(' · ') : '主页')));
+    if (c) meta.appendChild(document.createTextNode((numOf(w) ? '　' : '') + [c.name, groupName(w)].filter(Boolean).join(' · ')));
+    meta.hidden = !meta.textContent;
     $('ex-series').textContent = w.series || '';
     $('ex-series').hidden = !w.series;
     $('ex-title').textContent = w.title;
@@ -298,20 +340,28 @@
     $('ex-summary').hidden = !w.summary;
     paragraphs($('ex-note'), w.note);
     $('ex-note-wrap').hidden = !(w.note && w.note.trim());
-    $('ex-credit').textContent = [w.stage ? '第 1 张为抠图后的展台图' : '', w.credit].filter(Boolean).join('；');
+    $('ex-credit').textContent = [w.stage ? '第 1 张为展台合成图' : '', w.credit].filter(Boolean).join('；');
     // 有原帖链到原帖，没有就链到作者闲鱼主页
     var src = $('ex-source');
     src.href = w.source || M.shop;
-    src.firstChild.nodeValue = w.source ? '在闲鱼看原帖 ' : '去闲鱼找作者 ';
+    src.firstChild.nodeValue = w.source ? '在闲鱼看原帖 ' : '去闲鱼找光盐居 ';
 
     track.textContent = '';
     thumbs.textContent = '';
     var gallery = galleryOf(w);
     gallery.forEach(function (p, k) {
-      var s = el('div', 'ex-slide' + (w.stage && k === 0 ? ' is-stage' : ''));
-      var pic = img(full(p), null, w.title + (w.stage && k === 0 ? '（展台图）' : '（第 ' + (k + 1) + ' 张）'), k === 0);
-      s.appendChild(pic);
-      if (w.stage && k === 0) tilt(s, pic);
+      var isStage = w.stage && k === 0;
+      var s = el('div', 'ex-slide' + (isStage ? ' is-stage' : ''));
+      if (isStage && w.cut) {
+        s.appendChild(makeStage(w, true));
+        addZone(s);
+      } else if (isStage) {
+        s.appendChild(img(full(p), null, w.title + '（展台合成图）', true));
+      } else {
+        s.appendChild(img(full(p), null, w.title + '（第 ' + (k + 1) + ' 张）', k === 0));
+      }
+      // 合成图在图上直接标明，不让人误以为是实拍
+      if (isStage) s.appendChild(el('span', 'ex-tag', '展台合成图'));
       track.appendChild(s);
       if (gallery.length > 1) {
         var t = el('button');
@@ -327,11 +377,12 @@
 
     var peers = c ? inCat(c.id) : [];
     var k = peers.indexOf(w);
+    // 不首尾循环：第一件没有“上一件”，最后一件没有“下一件”
     $('ex-walk').hidden = peers.length < 2 || k < 0;
-    if (peers.length > 1 && k >= 0) {
-      walkLabel($('ex-walk-prev'), '← 上一件', peers[(k - 1 + peers.length) % peers.length]);
-      walkLabel($('ex-walk-next'), '下一件 →', peers[(k + 1) % peers.length]);
-    }
+    $('ex-walk-prev').hidden = k <= 0;
+    $('ex-walk-next').hidden = k < 0 || k >= peers.length - 1;
+    if (k > 0) walkLabel($('ex-walk-prev'), '← 上一件', peers[k - 1]);
+    if (k >= 0 && k < peers.length - 1) walkLabel($('ex-walk-next'), '下一件 →', peers[k + 1]);
     dlg.querySelector('.ex-label').scrollTop = 0;
     dlg.querySelector('.ex-shell').scrollTop = 0;
     document.title = w.title + ' · 光盐居 · 线上博物馆';
@@ -381,9 +432,10 @@
       var b = el('button', 'hc-slide');
       b.type = 'button';
       b.setAttribute('aria-label', [w.title, w.subtitle].filter(Boolean).join(' · ') + '，查看详情');
-      b.appendChild(img(full(coverOf(w)), null, w.title, true));
+      b.appendChild(w.cut ? makeStage(w, true) : img(full(coverOf(w)), null, w.title, true));
       b.addEventListener('click', function () { lastFocus = b; location.hash = '#/w/' + w.id; });
       stageBox.appendChild(b);
+      addZone(b);
       var d = el('button', 'hc-dot');
       d.type = 'button';
       d.setAttribute('role', 'tab');
@@ -447,7 +499,6 @@
       x0 = null;
       if (Math.abs(dx) > 40) go((at + (dx < 0 ? 1 : ids.length - 1)) % ids.length);
     });
-    tilt(stageBox, function () { return stageBox.querySelector('.hc-slide.is-active img'); });
     go(0);
   })();
 
