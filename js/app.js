@@ -164,27 +164,60 @@
     if (byId[id]) featuredBox.appendChild(card(byId[id], k === 0));
   });
 
-  /* ---------- 主页：前奏曲四个门类 ---------- */
+  /* ---------- 主页：前奏曲四个门类 ----------
+   * 四扇“门”：上半是小展台，放门类代表作（feature，有抠图时带立体效果）；下半是门类名、介绍和件数。
+   * 还没有作品的门类，展台上挂一排草木染布条。 */
+  var DYES = [['蓝草', '#2b4a80'], ['茜草', '#a63f3a'], ['栀子', '#d4a23a'], ['苏木', '#7d2f4f'], ['槐米', '#a6a24a']];
+  var dyeRack = function () {
+    var rack = el('div', 'dye-rack');
+    rack.setAttribute('aria-hidden', 'true');
+    rack.appendChild(el('span', 'dye-rod'));
+    DYES.forEach(function (d, i) {
+      var s = el('span', 'dye-strip');
+      s.style.setProperty('--dye', d[1]);
+      s.style.setProperty('--i', i);
+      s.style.setProperty('--len', [60, 70, 54, 66, 58][i] + '%');
+      s.appendChild(el('span', 'dye-name', d[0]));
+      rack.appendChild(s);
+    });
+    return rack;
+  };
   var catsBox = $('cats');
   cats.forEach(function (c, k) {
     var li = el('li');
-    var a = el('a', 'cat-card' + (c.status === 'soon' ? ' is-soon' : ''));
+    var soon = c.status === 'soon';
+    var a = el('a', 'cat-card' + (soon ? ' is-soon' : ''));
     a.href = '#/c/' + c.id;
+    var w = byId[c.feature];
+    a.style.setProperty('--accent', (w && w.glow) || '#7d9a6a');
     var n = inCat(c.id).length;
-    if (c.cover) {
-      var cv = img(thumb(c.cover), full(c.cover), '');
+    var top = el('span', 'cat-top');
+    top.appendChild(el('span', 'cat-no latin', String(k + 1).padStart(2, '0')));
+    top.appendChild(el('span', 'cat-en latin', c.en));
+    a.appendChild(top);
+    var stage = el('div', 'cat-stage');
+    if (w && w.cut) {
+      stage.appendChild(makeStage(w));
+      addZone(a);
+    } else if (w) {
+      var cv = img(thumb(coverOf(w)), full(coverOf(w)), '');
       cv.className = 'cat-cover';
-      a.appendChild(cv);
+      stage.appendChild(cv);
+    } else {
+      stage.appendChild(dyeRack());
     }
-    a.appendChild(el('span', 'cat-no latin', String(k + 1).padStart(2, '0')));
+    a.appendChild(stage);
     var body = el('span', 'cat-body');
     body.appendChild(el('span', 'cat-name brush', c.name));
-    body.appendChild(el('span', 'cat-en latin', c.en));
     body.appendChild(el('span', 'cat-intro', c.intro || ''));
-    var meta = c.status === 'soon' ? '筹备中'
-      : (c.groups || []).map(function (g) { return g.name; }).join(' · ') + '　' + n + ' 件';
-    body.appendChild(el('span', 'cat-meta', meta));
     a.appendChild(body);
+    var foot = el('span', 'cat-foot');
+    // 陈列名逐个不折行，换行只发生在名字之间
+    var groupsLine = el('span', 'cat-groups', soon ? '筹备中' : '');
+    (soon ? [] : c.groups || []).forEach(function (g) { groupsLine.appendChild(el('span', null, g.name)); });
+    foot.appendChild(groupsLine);
+    if (!soon) foot.appendChild(el('span', 'cat-count', n + ' 件'));
+    a.appendChild(foot);
     li.appendChild(a);
     catsBox.appendChild(li);
   });

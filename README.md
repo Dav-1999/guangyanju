@@ -44,7 +44,8 @@ cd 光盐居 && python3 -m http.server 8000
 ## 作品节选、门类和陈列
 
 - **作品节选**：改 `featured` 里的作品 id，第一件占大图。
-- **开放草木染坊**：把 `categories` 里草木染坊的 `status` 改成 `'open'`，在 `groups` 里加一个陈列，作品的 `cat` 填 `ranfang`。
+- **开放草木染坊**：把 `categories` 里草木染坊的 `status` 改成 `'open'`，在 `groups` 里加一个陈列，作品的 `cat` 填 `ranfang`，再把 `feature` 填成一件代表作的 id（前奏曲门面上就会换掉染布条，放这件作品）。
+- **换门面代表作**：改门类的 `feature`（作品 id）。有抠图（`cut`）的作品在门面上有立体效果。
 - **新增陈列**：在对应门类的 `groups` 里照格式加一行，门类页会自动出现新的一节和跳转按钮。
 
 ## 上线前请留意

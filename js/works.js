@@ -22,14 +22,14 @@ window.MUSEUM = {
   /*
    * 前奏曲 · 四个门类
    *   status  'open' 开放 / 'soon' 筹备中（门类页显示为空）
-   *   cover   门类封面图
+   *   feature 门面展台上放的代表作（作品 id），有抠图时带立体效果
    *   about   门类页顶部的介绍，可多段（\n 分段）
    *   groups  门类下的陈列，作品用 group 字段归入
    */
   categories: [
     {
       id: 'ronghua', name: '绒花', en: 'Velvet Flowers', status: 'open',
-      cover: 'works/xiuqiu-1-stage.jpg',
+      feature: 'xiuqiu',
       intro: '蚕丝与铜丝，一瓣一瓣搓出来的花、蝶与小物。',
       about: '绒花唐代就有，多做头饰。光盐居做的绒花样子新、价钱公道，男女都能戴。',
       groups: [
@@ -41,7 +41,7 @@ window.MUSEUM = {
     },
     {
       id: 'zhijin', name: '织锦画', en: 'Brocade Art', status: 'open',
-      cover: 'works/lushen-1-stage.jpg',
+      feature: 'lushen',
       intro: '收锦料时挑出织纹好看的几块，裱成了框画。',
       about:
         '织锦以桑蚕丝为主料。收集东方锦料样本时，光盐居会把织纹有意思的几块裱成框画。\n' +
@@ -56,7 +56,7 @@ window.MUSEUM = {
     },
     {
       id: 'qidian', name: '漆钿', en: 'Lacquer & Inlay', status: 'open',
-      cover: 'works/luodian-4-stage.jpg',
+      feature: 'luodian',
       intro: '贝壳的光，铺在黑色真丝上。',
       about:
         '螺钿是把贝壳磨成薄片、嵌饰在器物表面的老手艺，属于髹漆工艺的一支。光盐居的螺钿画以黑色真丝为底，贝片配合手绘，挂在家里、送人都合适。\n' +
