@@ -41,7 +41,7 @@ window.MUSEUM = {
     },
     {
       id: 'zhijin', name: '织锦画', en: 'Brocade Art', status: 'open',
-      cover: 'works/lushen-1.jpg',
+      cover: 'works/lushen-1-stage.jpg',
       intro: '收锦料时挑出织纹好看的几块，裱成了框画。',
       about:
         '织锦以桑蚕丝为主料。收集东方锦料样本时，光盐居会把织纹有意思的几块裱成框画。\n' +
@@ -56,7 +56,7 @@ window.MUSEUM = {
     },
     {
       id: 'qidian', name: '漆钿', en: 'Lacquer & Inlay', status: 'open',
-      cover: 'works/luodian-1.jpg',
+      cover: 'works/luodian-4-stage.jpg',
       intro: '贝壳的光，铺在黑色真丝上。',
       about:
         '螺钿是把贝壳磨成薄片、嵌饰在器物表面的老手艺，属于髹漆工艺的一支。光盐居的螺钿画以黑色真丝为底，贝片配合手绘，挂在家里、送人都合适。\n' +
@@ -80,6 +80,7 @@ window.MUSEUM = {
    *   summary   正文，\n 分段；整行写成【xx】或 #xx# 会显示为小标题
    *   images    图片路径（相对 assets/），第一张是封面
    *   stage     展台合成图（抠图后放在黑丝绒底上），有它时做卡片封面，并排在详情第一张
+ *   frame     true 时 stage 只是把原照片装框放上展台（背景太乱抠不出主体），只做封面、不进详情
    *   cut       透明底主体层（WebP），有它时主页轮播和详情第一张用分层展台，带立体效果
    *   credit    图片来源说明（有展台图时，第 1 张是展台图，原图从第 2 张起）
    *   source    闲鱼原帖链接
@@ -88,6 +89,7 @@ window.MUSEUM = {
     /* ---------- 珠宝篇（待定）：只保留若尘花冠的图片 ---------- */
     {
       id: 'dust', cat: '',
+      stage: 'works/dust-4-stage.jpg', cut: 'works/dust-4-cut.webp',
       series: '珠宝篇', title: '若尘', subtitle: '传世花冠',
       glow: '#7fb7d9',
       images: ['works/dust-4.jpg', 'works/dust-5.jpg', 'works/dust-1.jpg', 'works/dust-7.jpg',
@@ -124,6 +126,7 @@ window.MUSEUM = {
     },
     {
       id: 'niao', cat: 'ronghua', group: 'mengwu',
+      stage: 'works/niao-1-stage.jpg', cut: 'works/niao-1-cut.webp',
       title: '点枝渴', subtitle: '生丝小鸟',
       tags: ['生丝', '小鸟', '枝头树果'],
       glow: '#e2803a',
@@ -168,6 +171,7 @@ window.MUSEUM = {
     },
     {
       id: 'junzhu', cat: 'ronghua', group: 'huanyu',
+      stage: 'works/answers-1-stage.jpg', frame: true,
       series: '博物系列', title: '君主斑蝶', subtitle: 'Answers on Her Way',
       tags: ['拟态造景', '双面蝶', '精微毒花', '夹竹桃'],
       glow: '#e0782c', feature: true,
@@ -193,15 +197,17 @@ window.MUSEUM = {
     },
     {
       id: 'ruxue', cat: 'ronghua', group: 'huanyu',
+      stage: 'works/ruxue-1-stage.jpg', cut: 'works/ruxue-1-cut.webp',
       title: '如血',
       tags: ['彼岸花', '发簪', '透明匣'],
       glow: '#b0182a',
       summary: '一簇血红的彼岸花，细长的蕊向四面散开，花下是一支白色发簪。收藏时装进透明匣，外面系一段白纱。',
       images: ['works/ruxue-1.jpg', 'archive/redbloom.jpg'],
-      credit: '第 2 张为收藏者实拍'
+      credit: '第 3 张为收藏者实拍'
     },
     {
       id: 'qingting', cat: 'ronghua', group: 'huanyu',
+      stage: 'works/qingting-1-stage.jpg', cut: 'works/qingting-1-cut.webp',
       title: '蓝蜻蜓',
       tags: ['青金石', '光盐居代表色', '胸针', '手书落款'],
       glow: '#2f4fe0',
@@ -215,7 +221,7 @@ window.MUSEUM = {
         '颜色取自阿富汗青金石。光盐居比对了一批蓝度不同的原石，在染色蚕丝里试过群青和天蓝，最后定了深蓝。后来的繁星月牙梳、蓝苍、如露都用了这抹蓝，它也成了光盐居的代表色。',
       images: ['works/qingting-1.jpg', 'archive/dragonfly-3.jpg', 'archive/dragonfly-6.jpg', 'archive/dragonfly-4.jpg',
                'archive/dragonfly-5.jpg', 'archive/dragonfly-1.jpg', 'archive/dragonfly-2.jpg'],
-      credit: '第 2～7 张为收藏者实拍'
+      credit: '第 3～8 张为收藏者实拍'
     },
 
     /* ================= 绒花 · 繁花世界 ================= */
@@ -268,6 +274,7 @@ window.MUSEUM = {
     },
     {
       id: 'moli', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/moli-1-stage.jpg', frame: true,
       title: '在水一方', subtitle: '茉莉花',
       tags: ['茉莉', '花串', '耳坠', '七夕'],
       glow: '#dcd8c8',
@@ -292,6 +299,7 @@ window.MUSEUM = {
     },
     {
       id: 'furong', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/furong-1-stage.jpg', cut: 'works/furong-1-cut.webp',
       title: '点绛唇', subtitle: '芙蓉',
       tags: ['芙蓉', '粉白渐变'],
       glow: '#e86a7a',
@@ -317,6 +325,7 @@ window.MUSEUM = {
     },
     {
       id: 'malan', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/malan-1-stage.jpg', cut: 'works/malan-1-cut.webp',
       series: '博物系列', title: '掐丝马兰花',
       tags: ['掐丝', '马兰花'],
       glow: '#7a6ad8',
@@ -325,6 +334,7 @@ window.MUSEUM = {
     },
     {
       id: 'meigui', cat: 'ronghua', group: 'fanhua',
+      stage: 'works/meigui-1-stage.jpg', cut: 'works/meigui-1-cut.webp',
       title: '暗香玫瑰',
       tags: ['玫瑰', '框画'],
       glow: '#9c1730',
@@ -335,6 +345,7 @@ window.MUSEUM = {
     /* ================= 绒花 · 行礼如仪 ================= */
     {
       id: 'xiaobaihua', cat: 'ronghua', group: 'xingli',
+      stage: 'works/xiaobaihua-1-stage.jpg', cut: 'works/xiaobaihua-1-cut.webp',
       series: '祭时礼', title: '小白花',
       tags: ['白花', '祭奠'],
       glow: '#e8e4d8',
@@ -402,6 +413,7 @@ window.MUSEUM = {
     },
     {
       id: 'chazhen', cat: 'ronghua', group: 'xingli',
+      stage: 'works/chazhen-1-stage.jpg', frame: true,
       series: '宜室宜家', title: '枝叶茶用', subtitle: '竹枝一回眸',
       tags: ['竹作', '茶针', '茶拨'],
       glow: '#7fae4a',
@@ -422,6 +434,7 @@ window.MUSEUM = {
     },
     {
       id: 'fanxing', cat: 'ronghua', group: 'xingli',
+      stage: 'works/fanxing-1-stage.jpg', cut: 'works/fanxing-1-cut.webp',
       series: '宜室宜家', title: '繁星月牙梳',
       tags: ['发梳', '淡水珍珠', '光盐居代表色'],
       glow: '#3d6cf0',
@@ -436,10 +449,11 @@ window.MUSEUM = {
         '梳子可以更换为木梳，也可以改为其他主体，或者也可以直接做成插花。（样品图里的梳子不是银料，具体什么材质没测过。仅是表面带闪银色，中意它的好看又耐用而已。）\n' +
         '可改色改形。更接近点翠颜色的蚕丝线，倒也不是没有。另外这个花挺像勿忘我的。',
       images: ['works/fanxing-1.jpg', 'archive/bluecomb.jpg'],
-      credit: '第 2 张为收藏者实拍'
+      credit: '第 3 张为收藏者实拍'
     },
     {
       id: 'ziteng', cat: 'ronghua', group: 'xingli',
+      stage: 'works/ziteng-1-stage.jpg', frame: true,
       series: '宜室宜家', title: '落梅紫藤',
       tags: ['紫藤', '落梅'],
       glow: '#c97ab0',
@@ -459,6 +473,7 @@ window.MUSEUM = {
     /* ================= 织锦画 ================= */
     {
       id: 'mawen', cat: 'zhijin', group: 'zhijin',
+      stage: 'works/mawen-2-stage.jpg', cut: 'works/mawen-2-cut.webp',
       title: '炫彩马纹',
       tags: ['马纹', '桑蚕丝', '框画'],
       glow: '#b0306a',
@@ -473,6 +488,7 @@ window.MUSEUM = {
     },
     {
       id: 'shuimu', cat: 'zhijin', group: 'zhijin',
+      stage: 'works/shuimu-3-stage.jpg', cut: 'works/shuimu-3-cut.webp',
       title: '幽蓝水母',
       tags: ['水母', '茶纤维', '框画'],
       glow: '#3a6ad8',
@@ -487,6 +503,7 @@ window.MUSEUM = {
     },
     {
       id: 'lushen', cat: 'zhijin', group: 'zhijin',
+      stage: 'works/lushen-1-stage.jpg', cut: 'works/lushen-1-cut.webp',
       title: '林深见鹿',
       tags: ['鹿', '螺钿彩线', '挂画'],
       glow: '#d9a640', feature: true,
@@ -502,6 +519,7 @@ window.MUSEUM = {
     /* ================= 漆钿 ================= */
     {
       id: 'luodian', cat: 'qidian', group: 'luodian',
+      stage: 'works/luodian-4-stage.jpg', cut: 'works/luodian-4-cut.webp',
       title: '月夜吹笛少女',
       tags: ['星河璀璨', '螺钿手绘', '黑色真丝'],
       glow: '#7fd8cf', feature: true,

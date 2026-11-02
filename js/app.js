@@ -21,9 +21,11 @@
   };
   var full = function (p) { return 'assets/' + p; };
   var thumb = function (p) { return 'assets/thumbs/' + p.split('/').pop(); };
-  // 有展台图（抠图后放在黑丝绒底上）的作品，用它做封面，并排在图集第一张
+  // 有展台图（抠图后放在黑丝绒底上）的作品，用它做封面，并排在图集第一张；
+  // frame 作品的展台图只是把原照片装框，只做封面，不进图集
   var coverOf = function (w) { return w.stage || w.images[0]; };
-  var galleryOf = function (w) { return w.stage ? [w.stage].concat(w.images) : w.images; };
+  var hasStageSlide = function (w) { return !!w.stage && !w.frame; };
+  var galleryOf = function (w) { return hasStageSlide(w) ? [w.stage].concat(w.images) : w.images; };
   /* ---------- 分层视差（立体感） ----------
    * 有透明底主体层（cut）的作品，展台由四层组成：底光、地面、投影、主体。
    * 每个“视差区”上有 --px / --py 两个变量（-1～1），各层按不同幅度响应，于是有了纵深。
@@ -340,7 +342,7 @@
     $('ex-summary').hidden = !w.summary;
     paragraphs($('ex-note'), w.note);
     $('ex-note-wrap').hidden = !(w.note && w.note.trim());
-    $('ex-credit').textContent = [w.stage ? '第 1 张为展台合成图' : '', w.credit].filter(Boolean).join('；');
+    $('ex-credit').textContent = [hasStageSlide(w) ? '第 1 张为展台合成图' : '', w.credit].filter(Boolean).join('；');
     // 有原帖链到原帖，没有就链到作者闲鱼主页
     var src = $('ex-source');
     src.href = w.source || M.shop;
@@ -350,13 +352,13 @@
     thumbs.textContent = '';
     var gallery = galleryOf(w);
     gallery.forEach(function (p, k) {
-      var isStage = w.stage && k === 0;
+      var isStage = hasStageSlide(w) && k === 0;
       var s = el('div', 'ex-slide' + (isStage ? ' is-stage' : ''));
       if (isStage && w.cut) {
         s.appendChild(makeStage(w, true));
         addZone(s);
       } else if (isStage) {
-        s.appendChild(img(full(p), null, w.title + '（展台合成图）', true));
+        s.appendChild(img(thumb(p), full(p), w.title + '（展台合成图）', true));
       } else {
         s.appendChild(img(full(p), null, w.title + '（第 ' + (k + 1) + ' 张）', k === 0));
       }
@@ -432,7 +434,10 @@
       var b = el('button', 'hc-slide');
       b.type = 'button';
       b.setAttribute('aria-label', [w.title, w.subtitle].filter(Boolean).join(' · ') + '，查看详情');
-      b.appendChild(w.cut ? makeStage(w, true) : img(full(coverOf(w)), null, w.title, true));
+      // 展台图只有缩略图尺寸（thumbs/），其余用大图
+      b.appendChild(w.cut ? makeStage(w, true)
+        : w.stage ? img(thumb(w.stage), null, w.title, true)
+        : img(full(w.images[0]), null, w.title, true));
       b.addEventListener('click', function () { lastFocus = b; location.hash = '#/w/' + w.id; });
       stageBox.appendChild(b);
       addZone(b);
@@ -451,8 +456,9 @@
     var timer = 0;
     var startedAt = 0;
     var remaining = DUR;
-    var holds = { hover: false, focus: false, hidden: document.hidden };
-    var held = function () { return holds.hover || holds.focus || holds.hidden; };
+    // loading：第一张的图加载完才开始计时，免得网速慢时若尘还没出来就切走了
+    var holds = { hover: false, focus: false, hidden: document.hidden, loading: true };
+    var held = function () { return holds.hover || holds.focus || holds.hidden || holds.loading; };
     var schedule = function () {
       clearTimeout(timer);
       if (!autoplay || held()) return;
@@ -500,6 +506,18 @@
       if (Math.abs(dx) > 40) go((at + (dx < 0 ? 1 : ids.length - 1)) % ids.length);
     });
     go(0);
+    box.classList.add('is-paused');
+    var firstImgs = Array.prototype.slice.call(slides[0].querySelectorAll('img'));
+    var left = firstImgs.length;
+    var ready = function () { if (holds.loading) hold('loading', false); };
+    firstImgs.forEach(function (im) {
+      if (im.complete) { if (!--left) ready(); return; }
+      var done = function () { if (!--left) ready(); };
+      im.addEventListener('load', done);
+      im.addEventListener('error', done);
+    });
+    if (!firstImgs.length) ready();
+    setTimeout(ready, 8000);
   })();
 
   /* ---------- 路由 ---------- */
