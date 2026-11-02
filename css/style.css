@@ -192,38 +192,110 @@ main > section {
 }
 .no { font-family: var(--latin); font-style: italic; letter-spacing: .08em; color: var(--text-dim); }
 
-/* ---------- 贰 · 馆序 ---------- */
-.preface .section-head { max-width: 46em; margin-bottom: clamp(48px, 7vw, 88px); }
-.tenets {
-  list-style: none; margin: 0; padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-top: 1px solid var(--line);
-}
-.tenet {
-  position: relative;
-  padding: 36px clamp(20px, 3vw, 40px) 8px 0;
-}
-.tenet + .tenet { padding-left: clamp(20px, 3vw, 40px); border-left: 1px solid var(--line); }
-.tenet-no { display: block; font-size: 40px; line-height: 1; color: var(--ink); margin-bottom: 18px; }
-.tenet h3 { margin: 0 0 12px; font-size: 20px; font-weight: 600; letter-spacing: .14em; }
-.tenet p { margin: 0; color: var(--text-dim); font-size: 15px; }
+.hero-open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.section-head { margin-bottom: clamp(36px, 5vw, 56px); }
+.section-intro { margin: 14px 0 0; color: var(--text-dim); font-size: 15px; }
 
-/* ---------- 叁 · 展厅 ---------- */
-.hall { --mx: 50%; --my: 30%; container-type: inline-size; }
-.hall::before { /* 跟随指针的一束展厅灯光 */
+/* 跟随指针的一束展厅灯光 */
+.lit { --mx: 50%; --my: 30%; }
+.lit::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(520px circle at var(--mx) var(--my), rgba(58, 86, 242, .07), transparent 60%);
   opacity: 0; transition: opacity .6s;
 }
-.hall.is-lit::before { opacity: 1; }
-.hall-head {
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
-  gap: 28px;
-  margin-bottom: clamp(36px, 5vw, 56px);
+.lit.is-lit::before { opacity: 1; }
+
+/* 展墙用容器宽度计算行高，容器设在外层 */
+.selection, .group { container-type: inline-size; }
+
+/* ---------- 叁 · 前奏曲：四大门类 ---------- */
+.cats {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vw, 18px);
 }
-.hall-intro { margin: 14px 0 0; color: var(--text-dim); font-size: 15px; min-height: 1.85em; }
-.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.cat-card {
+  position: relative;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+  min-height: clamp(300px, 34vw, 460px);
+  padding: clamp(20px, 2.6vw, 36px);
+  overflow: hidden; isolation: isolate;
+  text-decoration: none;
+  background: var(--bg-raise);
+  border: 1px solid var(--line);
+  transition: border-color .5s var(--ease);
+}
+.cat-card:hover, .cat-card:focus-visible { border-color: var(--line-strong); }
+.cat-cover {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(.62) saturate(.95);
+  transition: transform 1.4s var(--ease), filter .8s var(--ease);
+}
+.cat-card::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(to top, rgba(6, 6, 6, .94) 0%, rgba(6, 6, 6, .45) 45%, rgba(6, 6, 6, .1) 100%);
+}
+.cat-card:hover .cat-cover, .cat-card:focus-visible .cat-cover { transform: scale(1.04); filter: brightness(.8) saturate(1.05); }
+.cat-card.is-soon { border-style: dashed; border-color: var(--line-strong); background: transparent; }
+.cat-card.is-soon::after { display: none; }
+.cat-no { font-size: 28px; line-height: 1; color: var(--ink); }
+.cat-body { display: grid; gap: 6px; }
+.cat-name { font-size: clamp(48px, 6vw, 84px); line-height: 1.05; }
+.cat-en { font-size: 17px; color: var(--text-dim); }
+.cat-intro { font-size: 15px; color: var(--text-dim); max-width: 26em; }
+.cat-meta { margin-top: 8px; font-size: 12px; letter-spacing: .24em; color: var(--text-faint); }
+.is-soon .cat-name { color: var(--text-dim); }
+
+/* ---------- 门类页 ---------- */
+.catview {
+  position: relative;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(96px, 11vw, 132px) var(--gutter) clamp(60px, 8vw, 100px);
+}
+.crumbs { display: flex; gap: 10px; font-size: 13px; letter-spacing: .2em; color: var(--text-faint); }
+.crumbs a { color: var(--text-dim); text-decoration: none; }
+.crumbs a:hover { color: var(--text); }
+.cat-head {
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 72px); align-items: start;
+  margin: clamp(28px, 4vw, 48px) 0 clamp(48px, 6vw, 80px);
+}
+.cat-title {
+  margin: 0;
+  writing-mode: vertical-rl;
+  font-size: clamp(72px, 9vw, 132px); line-height: 1;
+}
+.cat-en { margin: 6px 0 18px; }
+.cat-head .cat-en { font-size: clamp(20px, 2.2vw, 28px); color: var(--text-dim); }
+.cat-about { max-width: 40em; color: var(--text-dim); font-size: 15px; }
+.cat-about p { margin: 0 0 1em; }
+.cat-jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.group { margin-bottom: clamp(56px, 8vw, 104px); scroll-margin-top: 80px; }
+.group-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding-bottom: 14px; margin-bottom: clamp(18px, 2.4vw, 28px);
+  border-bottom: 1px solid var(--line);
+}
+.group-title { margin: 0; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.1; }
+.group-meta { font-family: var(--latin); font-style: italic; font-size: 15px; color: var(--text-faint); letter-spacing: .06em; }
+.cat-empty {
+  display: grid; place-items: center; gap: 12px;
+  min-height: 320px; padding: 40px;
+  border: 1px dashed var(--line-strong);
+  color: var(--text-faint); text-align: center;
+}
+.cat-empty .brush { font-size: 56px; color: var(--text-dim); }
+.cat-next {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 28px;
+  padding-top: 28px; border-top: 1px solid var(--line);
+}
+.cat-next-label { font-size: 12px; letter-spacing: .3em; color: var(--text-faint); }
+.cat-next a { font-size: 30px; text-decoration: none; color: var(--text-dim); transition: color .3s; }
+.cat-next a:hover { color: var(--text); }
+
 .filter {
   appearance: none; cursor: pointer;
   border: 1px solid var(--line);
@@ -306,17 +378,11 @@ main > section {
   opacity: .85;
 }
 
-/* 筹备中的展厅：空展位 */
-.soon {
-  height: 100%;
-  display: flex; flex-direction: column; justify-content: space-between;
-  padding: clamp(14px, 1.8vw, 22px);
-  border: 1px dashed var(--line-strong);
-  color: var(--text-faint);
+.card-title small {
+  margin-left: .6em;
+  font-size: .68em; font-weight: 400; letter-spacing: .1em;
+  color: var(--text-dim);
 }
-.soon-name { font-size: clamp(34px, 4vw, 52px); line-height: 1.1; color: var(--text-dim); writing-mode: vertical-rl; }
-.soon-meta { font-size: 12px; letter-spacing: .28em; }
-.soon-meta .latin { font-size: 14px; letter-spacing: .06em; display: block; color: var(--text-faint); }
 
 /* ---------- 肆 · 来访 ---------- */
 .visit { text-align: center; }
@@ -452,7 +518,9 @@ main > section {
   letter-spacing: .16em;
   line-height: 1.3;
 }
+.ex-subtitle { margin: 2px 0 0; font-size: 16px; letter-spacing: .24em; color: var(--paper-dim); }
 .ex-tags { margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--ink-deep); }
+.ex-h { margin: 1.4em 0 .5em; font-size: 14px; font-weight: 600; letter-spacing: .3em; color: var(--ink-deep); }
 .ex-facts {
   margin: 28px 0;
   display: grid; grid-template-columns: auto 1fr; gap: 8px 18px;
@@ -464,6 +532,8 @@ main > section {
 .ex-facts dt { color: var(--paper-dim); letter-spacing: .3em; white-space: nowrap; }
 .ex-facts dd { margin: 0; }
 .ex-body p { margin: 0 0 1em; text-align: justify; }
+#ex-summary { margin-top: 24px; }
+.ex-facts:not([hidden]) + #ex-summary { margin-top: 0; }
 .ex-note { margin-top: 28px; padding-top: 22px; border-top: 1px dashed rgba(27, 26, 24, .25); }
 .ex-note h3 { margin: 0 0 12px; font-size: 24px; color: var(--ink-deep); }
 .ex-credit { margin: 8px 0 0; font-size: 12px; letter-spacing: .2em; color: var(--paper-dim); }
@@ -508,9 +578,10 @@ main > section {
   .hero-figure img { max-height: 48svh; margin: 0 auto; }
   .hero-title-row { margin-top: -8px; }
   .hero-figure figcaption { right: var(--gutter); }
-  .tenets { grid-template-columns: 1fr; }
-  .tenet, .tenet + .tenet { padding: 28px 0; border-left: 0; }
-  .tenet + .tenet { border-top: 1px solid var(--line); }
+  .cats { grid-template-columns: 1fr; }
+  .cat-card { min-height: 280px; }
+  .cat-head { grid-template-columns: 1fr; gap: 8px; }
+  .cat-title { writing-mode: horizontal-tb; font-size: clamp(56px, 16vw, 84px); }
 
   .ex-shell { grid-template-columns: 1fr; grid-template-rows: auto; overflow-y: auto; height: 100%; overscroll-behavior: contain; }
   .ex-stage { height: 68svh; }
