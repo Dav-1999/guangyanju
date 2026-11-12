@@ -490,6 +490,15 @@ main > section {
 }
 .group-title { margin: 0; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.1; }
 .group-meta { font-family: var(--latin); font-style: italic; font-size: 15px; color: var(--text-faint); letter-spacing: .06em; }
+/* 陈列的主题前言：标题下一段作者的话，左边一道群青细线 */
+.group-intro {
+  max-width: 42em;
+  margin: 0 0 clamp(24px, 3vw, 38px);
+  padding-left: 18px;
+  border-left: 1px solid var(--ink);
+}
+.group-intro p { margin: 0 0 .45em; font-size: 15px; line-height: 1.95; letter-spacing: .04em; color: var(--text-dim); }
+.group-intro p:last-child { margin-bottom: 0; }
 .cat-empty {
   display: grid; place-items: center; gap: 12px;
   min-height: 320px; padding: 40px;

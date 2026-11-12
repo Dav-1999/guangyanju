@@ -71,7 +71,7 @@ window.MUSEUM = {
    *   status  'open' 开放 / 'soon' 筹备中（门类页显示为空）
    *   feature 门面展台上放的代表作（作品 id），有抠图时带立体效果
    *   about   门类页顶部的介绍，可多段（\n 分段）
-   *   groups  门类下的陈列，作品用 group 字段归入
+   *   groups  门类下的陈列，作品用 group 字段归入；intro 是陈列标题下的主题前言（\n 分段，可不写）
    */
   categories: [
     {
@@ -80,10 +80,14 @@ window.MUSEUM = {
       intro: '蚕丝与铜丝，一瓣一瓣搓出来的花、蝶与小物。',
       about: '绒花唐代就有，多做头饰。光盐居做的绒花样子新、价钱公道，男女都能戴。',
       groups: [
-        { id: 'mengwu', name: '绒绒萌物', en: 'Little Ones' },
-        { id: 'huanyu', name: '幻羽蝶变', en: 'Wings' },
-        { id: 'fanhua', name: '繁花世界', en: 'Blooms' },
-        { id: 'xingli', name: '行礼如仪', en: 'Occasions' }
+        { id: 'mengwu', name: '绒绒萌物', en: 'Little Ones',
+          intro: '毛茸茸的小动物和果子们\n融入日常生活的胖绒花' },
+        { id: 'huanyu', name: '幻羽蝶变', en: 'Wings',
+          intro: '千万种变幻莫测的蝴蝶，闪粉扑棱blingbling的，色彩会随角度和光线变化…\n每个人心里都藏着一只喜欢的蝴蝶，即便是同一种蝴蝶也有不同的诠释形态。\n非常闪非常漂亮，共创空间很大的一栏。' },
+        { id: 'fanhua', name: '繁花世界', en: 'Blooms',
+          intro: '花朵并不与人的现实需求相关，它也并不是权力和永恒的象征。但是数千年来，我们把它送给哀伤的人、喜悦的人、我们所爱的人。\n在这里的每一朵都是动人的情书，送给所有为ta驻足、感受到美的人，见到即拥有。' },
+        { id: 'xingli', name: '行礼如仪', en: 'Occasions',
+          intro: '悠久的历史，考究的工艺\n不但可以融入日常行走坐卧\n也极为适合婚丧嫁娶等重大典仪' }
       ]
     },
     {

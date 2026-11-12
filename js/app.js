@@ -346,6 +346,12 @@
       head.appendChild(el('h2', 'group-title brush', g.name));
       head.appendChild(el('span', 'group-meta', (g.en ? g.en + ' · ' : '') + list.length + ' 件'));
       sec.appendChild(head);
+      // 陈列的主题前言（作者写的一段话），没有就不显示
+      if (g.intro) {
+        var intro = el('div', 'group-intro');
+        paragraphs(intro, g.intro);
+        sec.appendChild(intro);
+      }
       var ul = el('ul', 'wall');
       list.forEach(function (w) { ul.appendChild(card(w, w.feature)); });
       sec.appendChild(ul);
