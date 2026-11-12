@@ -31,6 +31,7 @@
       <a href="#top">主页</a>
       <a href="#selection">节选</a>
       <a href="#qianzou">前奏曲</a>
+      <a href="#studio">工作室</a>
       <a href="#visit">联系</a>
     </nav>
   </header>
@@ -87,14 +88,47 @@
       <ul class="cats" id="cats" aria-label="四个门类"></ul>
     </section>
 
-    <!-- 联系 -->
+    <!-- 肆 · 工作室（内容在 works.js 的 studio 里改） -->
+    <section class="studio" id="studio" aria-labelledby="studio-title">
+      <span class="section-index brush" aria-hidden="true">肆 · 工作室</span>
+      <header class="section-head reveal">
+        <p class="eyebrow"><span class="latin">Studio</span> · <span id="studio-place"></span></p>
+        <h2 id="studio-title" class="section-title">工作室</h2>
+        <p class="studio-epigraph" id="studio-epigraph"></p>
+      </header>
+      <ul class="studio-photos" id="studio-photos" aria-label="工作室照片" hidden></ul>
+      <div class="studio-body">
+        <div class="studio-intro" id="studio-intro"></div>
+        <aside class="studio-visit" aria-labelledby="visit-info-title">
+          <h3 id="visit-info-title" class="studio-h">参观须知</h3>
+          <dl class="visit-facts" id="visit-facts"></dl>
+          <ul class="tickets" id="tickets" aria-label="票价"></ul>
+          <div class="booking" id="booking"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 伍 · 联系：线上收藏走闲鱼，线下参观预约 -->
     <section class="visit" id="visit" aria-labelledby="visit-title">
-      <span class="section-index brush" aria-hidden="true">肆 · 联系</span>
+      <span class="section-index brush" aria-hidden="true">伍 · 联系</span>
       <div class="visit-inner reveal">
         <span class="mark mark-lg" aria-hidden="true"></span>
-        <h2 id="visit-title" class="section-title">本馆不直接售卖</h2>
-        <p>想收藏、想订制，或者只是想聊聊哪件作品，请到闲鱼找光盐居。沟通和交易请都留在闲鱼上。</p>
-        <a class="btn btn-ink" id="shop-link" href="#" target="_blank" rel="noopener">前往闲鱼主页 <span aria-hidden="true">↗</span></a>
+        <h2 id="visit-title" class="section-title">线上收藏，线下参观</h2>
+        <div class="channels">
+          <div class="channel">
+            <p class="channel-tag latin">Online</p>
+            <h3>收藏与订制</h3>
+            <p>想收藏、想订制，或者只是想聊聊哪件作品，请到闲鱼找光盐居。沟通和交易都在闲鱼上完成。</p>
+            <a class="btn btn-ink" id="shop-link" href="#" target="_blank" rel="noopener">前往闲鱼主页 <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="channel">
+            <p class="channel-tag latin">Offline</p>
+            <h3>参观工作室</h3>
+            <p>工作室在云南保山，预约收费参观。请提前半月预约，与助理确定来访时间。</p>
+            <div class="contact-lines" id="contact-lines"></div>
+            <a class="btn btn-ghost" href="#studio">查看参观须知 <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
         <p class="brush closing">万古长空　一朝风月</p>
       </div>
     </section>
@@ -160,6 +194,15 @@
       </article>
       <button class="ex-close" id="ex-close" type="button" aria-label="关闭">×</button>
     </div>
+  </dialog>
+
+  <!-- 工作室照片大图 -->
+  <dialog class="lightbox" id="lightbox" aria-label="照片">
+    <figure>
+      <img id="lightbox-img" alt="">
+      <figcaption id="lightbox-cap"></figcaption>
+    </figure>
+    <button class="ex-close" id="lightbox-close" type="button" aria-label="关闭">×</button>
   </dialog>
 
   <script src="js/works.js"></script>

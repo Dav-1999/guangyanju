@@ -594,11 +594,119 @@ main > section {
   color: var(--text-dim);
 }
 
-/* ---------- 肆 · 联系 ---------- */
+/* ---------- 肆 · 工作室 ---------- */
+.studio-epigraph {
+  margin: 18px 0 0;
+  font-size: clamp(16px, 1.6vw, 19px); letter-spacing: .24em;
+  color: var(--text-dim);
+}
+.studio-photos {
+  list-style: none; margin: 0 0 clamp(40px, 5vw, 64px); padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: clamp(10px, 1.2vw, 16px);
+}
+.studio-photos button {
+  display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0;
+  overflow: hidden; cursor: zoom-in;
+  background: var(--bg-raise); border: 1px solid var(--line);
+}
+.studio-photos img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.studio-photos button:hover img, .studio-photos button:focus-visible img { transform: scale(1.04); }
+.studio-photo-cap { display: block; margin-top: 8px; font-size: 12px; letter-spacing: .14em; color: var(--text-faint); }
+.studio-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+}
+.studio-intro p { margin: 0 0 1.2em; max-width: 34em; font-size: 16px; line-height: 2.05; color: var(--text-dim); }
+.studio-intro h4 {
+  margin: 2.2em 0 .9em;
+  font-size: 18px; font-weight: 600; letter-spacing: .14em; line-height: 1.6;
+  color: var(--text);
+}
+.studio-intro h4::before { content: ""; display: inline-block; width: 18px; height: 1px; margin-right: 12px; vertical-align: middle; background: var(--ink); }
+.studio-intro h4:first-child { margin-top: 0; }
+/* 参观须知：一张展签式的卡片，桌面上随滚动停在右侧 */
+.studio-visit {
+  position: sticky; top: 96px;
+  padding: clamp(22px, 2.4vw, 32px);
+  background: linear-gradient(180deg, #0d0d0f 0%, #09090b 100%);
+  border: 1px solid var(--line);
+}
+.studio-h { margin: 0 0 20px; font-size: 18px; font-weight: 600; letter-spacing: .24em; }
+.visit-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 12px 18px; margin: 0; font-size: 14px; line-height: 1.85; }
+.visit-facts dt { color: var(--text-faint); letter-spacing: .12em; white-space: nowrap; }
+.visit-facts dd { margin: 0; color: var(--text-dim); }
+/* 票价：两张票根 */
+.tickets { list-style: none; margin: 26px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ticket {
+  position: relative;
+  display: grid; align-content: start; gap: 4px;
+  padding: 16px 16px 14px;
+  background: rgba(58, 86, 242, .07);
+  border: 1px solid rgba(58, 86, 242, .35);
+}
+.ticket-name { font-size: 13px; letter-spacing: .2em; color: var(--text-dim); }
+.ticket-price { font-family: var(--latin); font-size: clamp(28px, 2.4vw, 34px); line-height: 1.15; color: var(--text); }
+.ticket-price small { margin-left: 6px; font-family: var(--serif); font-size: 13px; color: var(--text-faint); }
+.ticket-note {
+  position: relative;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px dashed rgba(58, 86, 242, .45);
+  font-size: 12px; line-height: 1.75; color: var(--text-faint);
+}
+/* 票根两侧的半圆缺口 */
+.ticket-note::before, .ticket-note::after {
+  content: ""; position: absolute; top: -7px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #0b0b0d; border: 1px solid rgba(58, 86, 242, .35);
+}
+.ticket-note::before { left: -23px; }
+.ticket-note::after { right: -23px; }
+.booking { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.85; color: var(--text-dim); }
+.booking p { margin: 0; }
+.contact-lines { display: grid; justify-items: start; gap: 8px; margin-top: 12px; }
+.contact-lines[hidden] { display: none; }
+.contact-line { margin: 0 !important; font-size: 14px; letter-spacing: .08em; color: var(--text-dim); }
+.contact-line b { font-weight: 600; color: var(--text); letter-spacing: .04em; }
+.contact-line a { color: var(--text); text-underline-offset: 4px; }
+.wechat-qr { width: 132px; height: 132px; padding: 6px; background: #fff; }
+
+/* 照片大图 */
+.lightbox {
+  width: 100vw; height: 100vh; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0;
+  background: rgba(4, 4, 4, .94); color: var(--text);
+}
+.lightbox::backdrop { background: rgba(0, 0, 0, .6); }
+.lightbox figure { display: grid; place-items: center; gap: 12px; height: 100%; margin: 0; padding: 56px 16px 24px; box-sizing: border-box; }
+.lightbox img { max-width: 100%; max-height: calc(100vh - 120px); object-fit: contain; }
+.lightbox figcaption { font-size: 13px; letter-spacing: .14em; color: var(--text-dim); }
+
+/* ---------- 伍 · 联系 ---------- */
 .visit { text-align: center; }
-.visit-inner { max-width: 34em; margin: 0 auto; }
+.visit-inner { max-width: 62em; margin: 0 auto; }
 .visit .mark-lg { margin-bottom: 28px; }
 .visit p { color: var(--text-dim); font-size: 15px; margin: 22px 0 34px; }
+/* 两条路：线上收藏走闲鱼，线下预约参观 */
+.channels {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  margin-top: 40px;
+  text-align: left;
+}
+.channel {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+  padding: clamp(22px, 2.6vw, 34px);
+  background: linear-gradient(180deg, #0d0d0f 0%, #09090b 100%);
+  border: 1px solid var(--line);
+}
+.channel-tag { margin: 0 !important; font-size: 15px; color: var(--ink) !important; }
+.channel h3 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: .14em; }
+.visit .channel p { margin: 0; font-size: 14px; line-height: 1.9; }
+.channel .btn { margin-top: auto; }
+.channel .contact-lines { margin: 0; }
 .closing { margin: 72px 0 0 !important; font-size: clamp(26px, 3vw, 36px); color: var(--text) !important; letter-spacing: .12em; }
 
 .btn {
@@ -813,10 +921,15 @@ main > section {
   .ex-close { position: fixed; top: max(12px, env(safe-area-inset-top)); right: 12px; }
   .ex-arrow { display: none; }
   .ex-slide { padding: 56px 12px 8px; }
+
+  .studio-body { grid-template-columns: 1fr; }
+  .studio-visit { position: static; }
+  .channels { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   .nav-latin { display: none; }
-  .nav-links { gap: 14px; letter-spacing: .12em; font-size: 13px; }
+  /* 五个入口要挤进一行 */
+  .nav-links { gap: 12px; letter-spacing: .04em; font-size: 13px; }
   .section-index { display: none; }
   .hero-title { font-size: 92px; }
   .card-tags { display: none; }

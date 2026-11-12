@@ -1,7 +1,7 @@
 /* 光盐居 · 线上博物馆 —— 页面逻辑（不需要改动；更新展品只改 works.js）
  *
  * 地址规则
- *   #top / #selection / #qianzou / #visit   主页上的各区
+ *   #top / #selection / #qianzou / #studio / #visit   主页上的各区
  *   #/c/门类id                              门类页
  *   #/w/作品id                              作品详情（叠在当前页面之上，可直接分享）
  */
@@ -221,6 +221,90 @@
     li.appendChild(a);
     catsBox.appendChild(li);
   });
+
+  /* ---------- 主页：工作室 ---------- */
+  var S = M.studio || {};
+  var C = M.contact || {};
+  // 已开通的联系方式：企业微信号、二维码、邮箱；都没填时什么也不显示
+  var contactLines = function (box) {
+    box.textContent = '';
+    if (C.wechat) {
+      var wx = el('p', 'contact-line', '企业微信　');
+      wx.appendChild(el('b', null, C.wechat));
+      box.appendChild(wx);
+    }
+    if (C.wechatQR) {
+      var qr = img(full(C.wechatQR), null, '光盐居企业微信二维码');
+      qr.className = 'wechat-qr';
+      box.appendChild(qr);
+    }
+    if (C.email) {
+      var em = el('p', 'contact-line', '邮箱　');
+      var mail = el('a', null, C.email);
+      mail.href = 'mailto:' + C.email + '?subject=' + encodeURIComponent('预约参观光盐居工作室');
+      em.appendChild(mail);
+      box.appendChild(em);
+    }
+    box.hidden = !box.children.length;
+  };
+  (function () {
+    var section = $('studio');
+    if (!S.intro && !(S.visit && S.visit.length)) {
+      section.remove();
+      var link = document.querySelector('.nav-links a[href="#studio"]');
+      if (link) link.remove();
+      return;
+    }
+    $('studio-place').textContent = S.place || '';
+    $('studio-epigraph').textContent = S.epigraph || '';
+    $('studio-epigraph').hidden = !S.epigraph;
+    paragraphs($('studio-intro'), S.intro);
+
+    // 照片：点开看大图
+    var photos = $('studio-photos');
+    var lb = $('lightbox');
+    (S.photos || []).forEach(function (p) {
+      var li = el('li');
+      var b = el('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', (p.caption || '工作室照片') + '，查看大图');
+      b.appendChild(img(thumb(p.src), full(p.src), p.caption || ''));
+      b.addEventListener('click', function () {
+        $('lightbox-img').src = full(p.src);
+        $('lightbox-img').alt = p.caption || '工作室照片';
+        $('lightbox-cap').textContent = p.caption || '';
+        lb.showModal();
+      });
+      li.appendChild(b);
+      if (p.caption) li.appendChild(el('span', 'studio-photo-cap', p.caption));
+      photos.appendChild(li);
+    });
+    photos.hidden = !photos.children.length;
+    lb.addEventListener('click', function (e) { if (e.target === lb || e.target.id === 'lightbox-close') lb.close(); });
+
+    var facts = $('visit-facts');
+    (S.visit || []).forEach(function (f) {
+      facts.appendChild(el('dt', null, f[0]));
+      facts.appendChild(el('dd', null, f[1]));
+    });
+    var tickets = $('tickets');
+    (S.tickets || []).forEach(function (t) {
+      var li = el('li', 'ticket');
+      li.appendChild(el('span', 'ticket-name', t.name));
+      var price = el('span', 'ticket-price', t.price);
+      if (t.unit) price.appendChild(el('small', null, t.unit));
+      li.appendChild(price);
+      if (t.note) li.appendChild(el('span', 'ticket-note', t.note));
+      tickets.appendChild(li);
+    });
+    tickets.hidden = !tickets.children.length;
+    var booking = $('booking');
+    booking.appendChild(el('p', null, S.booking || ''));
+    var lines = el('div', 'contact-lines');
+    booking.appendChild(lines);
+    contactLines(lines);
+  })();
+  contactLines($('contact-lines'));
 
   /* ---------- 门类页 ---------- */
   var home = $('home');
