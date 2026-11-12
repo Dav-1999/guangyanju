@@ -280,6 +280,7 @@
       photos.appendChild(li);
     });
     photos.hidden = !photos.children.length;
+    photos.dataset.count = photos.children.length;  // 一两张时换成并排大图
     lb.addEventListener('click', function (e) { if (e.target === lb || e.target.id === 'lightbox-close') lb.close(); });
 
     var facts = $('visit-facts');
