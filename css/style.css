@@ -192,6 +192,21 @@ main > section {
 }
 .no { font-family: var(--latin); font-style: italic; letter-spacing: .08em; color: var(--text-dim); }
 
+/* 引言：接在主页之后的一段馆序，窄栏居中，像展厅入口墙上的前言 */
+main > section.preface { padding-top: clamp(24px, 4vw, 56px); padding-bottom: clamp(48px, 7vw, 96px); }
+.preface-inner {
+  max-width: 36em; margin: 0 auto;
+  padding-left: clamp(18px, 2.4vw, 32px);
+  border-left: 1px solid var(--ink);
+}
+.preface-inner p:not(.eyebrow) {
+  margin: 0 0 1.15em;
+  font-size: clamp(15px, 1.25vw, 17px); line-height: 2.1; letter-spacing: .05em;
+  color: var(--text-dim);
+  text-wrap: pretty;   /* 不让“革。”“录。”这样单字落到末行 */
+}
+.preface-inner .preface-close { margin: 1.8em 0 0; color: var(--text); letter-spacing: .1em; }
+
 /* 主页轮播：四类作品精选 */
 .hc-stage { position: relative; height: min(72svh, 780px); }
 .hc-slide {
@@ -744,6 +759,7 @@ main > section {
 .foot .brush { font-size: 20px; color: var(--text-dim); letter-spacing: 0; }
 .foot .latin { font-size: 14px; }
 .foot-sep { opacity: .5; }
+.foot-text { letter-spacing: .14em; text-align: center; text-wrap: balance; }
 
 /* ---------- 展品详情 ---------- */
 .exhibit {
@@ -876,6 +892,34 @@ main > section {
 .ex-facts:not([hidden]) + #ex-summary { margin-top: 0; }
 .ex-note { margin-top: 28px; padding-top: 22px; border-top: 1px dashed var(--line); }
 .ex-note h3 { margin: 0 0 12px; font-size: 24px; color: var(--ink); }
+/* 收藏者题诗：一行一篇的目录，点开是诗笺 */
+.ex-poems { margin-top: 28px; padding-top: 22px; border-top: 1px dashed var(--line); }
+.ex-poems h3 { margin: 0; font-size: 24px; color: var(--ink); }
+.ex-poems-meta { margin: 2px 0 12px; font-size: 12px; letter-spacing: .2em; color: var(--text-faint); }
+.ex-poems h3 + #ex-poems { margin-top: 12px; }
+.poem { border-top: 1px solid var(--line); }
+.poem:last-child { border-bottom: 1px solid var(--line); }
+.poem summary {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 11px 2px; cursor: pointer; list-style: none;
+}
+.poem summary::-webkit-details-marker { display: none; }
+.poem summary::after {
+  content: "+"; flex: none; margin-left: auto;
+  font-family: var(--latin); font-size: 18px; line-height: 1; color: var(--text-faint);
+}
+.poem[open] summary::after { content: "−"; color: var(--ink); }
+.poem-date { flex: none; font-family: var(--latin); font-style: italic; font-size: 14px; letter-spacing: .06em; color: var(--text-faint); }
+.poem-first {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 14.5px; letter-spacing: .06em; color: var(--text-dim);
+  transition: color .3s;
+}
+.poem summary:hover .poem-first, .poem[open] .poem-first { color: var(--text); }
+.poem-body { padding: 4px 2px 20px; }
+.poem-body p { margin: 0 0 1.1em; line-height: 2.05; letter-spacing: .06em; color: var(--text-dim); text-align: left; }
+.poem-body p:last-child { margin-bottom: 0; }
+.poem-body .poem-by { font-size: 12.5px; letter-spacing: .16em; color: var(--text-faint); }
 .ex-credit { margin: 10px 0 0; font-size: 12px; letter-spacing: .16em; color: var(--text-faint); }
 .ex-credit:empty { display: none; }
 .ex-actions { margin-top: 30px; }
@@ -950,6 +994,9 @@ main > section {
   .section-index { display: none; }
   .hero-title { font-size: 92px; }
   .card-tags { display: none; }
+  /* 页脚文字自成一行时，分隔号就不要了 */
+  .foot-sep { display: none; }
+  .foot-text { flex-basis: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

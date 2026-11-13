@@ -437,6 +437,36 @@
     btn.onclick = function () { history.replaceState(null, '', '#/w/' + w.id); fill(w); };
   };
 
+  // 收藏者题诗：每篇一行（日期 + 首句），点开看全文；只有一篇时直接展开
+  var renderPoems = function (poems) {
+    var box = $('ex-poems');
+    box.textContent = '';
+    poems.forEach(function (p) {
+      var d = el('details', 'poem');
+      d.open = poems.length === 1;
+      var s = el('summary');
+      s.appendChild(el('span', 'poem-date', p.date || ''));
+      s.appendChild(el('span', 'poem-first', p.title || String(p.text).split('\n')[0]));
+      d.appendChild(s);
+      var body = el('div', 'poem-body');
+      // 空行分节，单个换行分行
+      String(p.text).split(/\n\s*\n/).forEach(function (stanza) {
+        var q = el('p');
+        stanza.split('\n').forEach(function (line, j) {
+          if (j) q.appendChild(document.createElement('br'));
+          q.appendChild(document.createTextNode(line.trim()));
+        });
+        body.appendChild(q);
+      });
+      if (p.by) body.appendChild(el('p', 'poem-by', p.by));
+      d.appendChild(body);
+      box.appendChild(d);
+    });
+    $('ex-poems-meta').textContent = poems.length > 1 ? poems.length + ' 篇 · 按写作时间排列' : '';
+    $('ex-poems-meta').hidden = poems.length < 2;
+    $('ex-poems-wrap').hidden = !poems.length;
+  };
+
   var fill = function (w) {
     dlg.style.setProperty('--glow', w.glow || 'var(--ink)');
     var c = catById[w.cat];
@@ -466,6 +496,7 @@
     $('ex-summary').hidden = !w.summary;
     paragraphs($('ex-note'), w.note);
     $('ex-note-wrap').hidden = !(w.note && w.note.trim());
+    renderPoems(w.poems || []);
     $('ex-credit').textContent = [hasStageSlide(w) ? '第 1 张为展台合成图' : '', w.credit].filter(Boolean).join('；');
     // 有原帖链到原帖，没有就链到作者闲鱼主页
     var src = $('ex-source');
@@ -686,7 +717,8 @@
   if ('IntersectionObserver' in window) {
     var spy = new IntersectionObserver(function (entries) {
       if (view !== 'home') return;
-      entries.forEach(function (en) { if (en.isIntersecting) setActive('#' + en.target.id); });
+      // data-nav：引言属于主页，导览栏仍亮“主页”
+      entries.forEach(function (en) { if (en.isIntersecting) setActive(en.target.dataset.nav || '#' + en.target.id); });
     }, { rootMargin: '-45% 0px -50% 0px' });
     document.querySelectorAll('#home > section').forEach(function (s) { spy.observe(s); });
 
