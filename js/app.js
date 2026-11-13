@@ -458,6 +458,13 @@
         });
         body.appendChild(q);
       });
+      // 诗里引用的别人的文字：单独一块，注明出处
+      if (p.quote) {
+        var bq = el('blockquote', 'poem-quote');
+        bq.appendChild(el('p', null, p.quote.text));
+        if (p.quote.from) bq.appendChild(el('footer', null, '—— ' + p.quote.from));
+        body.appendChild(bq);
+      }
       if (p.by) body.appendChild(el('p', 'poem-by', p.by));
       d.appendChild(body);
       box.appendChild(d);

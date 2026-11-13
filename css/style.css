@@ -919,6 +919,9 @@ main > section.preface { padding-top: clamp(24px, 4vw, 56px); padding-bottom: cl
 .poem-body { padding: 4px 2px 20px; }
 .poem-body p { margin: 0 0 1.1em; line-height: 2.05; letter-spacing: .06em; color: var(--text-dim); text-align: left; }
 .poem-body p:last-child { margin-bottom: 0; }
+.poem-quote { margin: 1.4em 0 0; padding: 2px 0 2px 14px; border-left: 1px solid var(--ink); }
+.poem-body .poem-quote p { margin: 0; color: var(--text); }
+.poem-quote footer { margin-top: .3em; font-size: 12.5px; letter-spacing: .16em; color: var(--text-faint); }
 .poem-body .poem-by { font-size: 12.5px; letter-spacing: .16em; color: var(--text-faint); }
 .ex-credit { margin: 10px 0 0; font-size: 12px; letter-spacing: .16em; color: var(--text-faint); }
 .ex-credit:empty { display: none; }
@@ -973,7 +976,8 @@ main > section.preface { padding-top: clamp(24px, 4vw, 56px); padding-bottom: cl
   .cat-head { grid-template-columns: 1fr; gap: 8px; }
   .cat-title { writing-mode: horizontal-tb; font-size: clamp(56px, 16vw, 84px); }
 
-  .ex-shell { grid-template-columns: 1fr; grid-template-rows: auto; overflow-y: auto; height: 100%; overscroll-behavior: contain; }
+  /* minmax(0, 1fr)：不让题诗目录里不换行的长首句把整栏撑宽 */
+  .ex-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; overflow-y: auto; height: 100%; overscroll-behavior: contain; }
   .ex-stage { height: 64svh; }
   .ex-label { overflow: visible; border-left: 0; border-top: 1px solid var(--line); padding: 34px 22px max(40px, env(safe-area-inset-bottom)); }
   .ex-close { position: fixed; top: max(12px, env(safe-area-inset-top)); right: 12px; }
