@@ -45,6 +45,8 @@ cd 光盐居 && python3 -m http.server 8000
 ## 作品节选、门类和陈列
 
 - **作品节选**：改 `featured` 里的作品 id，第一件占大图。
+- **主页的蓝蜻蜓**：`index.html` 里的 `.hero-fly`，用的是「发光的海」的抠图，压在“光盐居”三个字下面飞出来，点开是这件作品；样式在 `css/style.css` 的 `.hero-fly`。
+- **共创节选收起**：正文里整行写成 `#共创节选#` 或 `【对话】` 的小标题，下面的语录会收成一行「共创节选 · N 句」，点开才显示。
 - **开放草木染坊**：把 `categories` 里草木染坊的 `status` 改成 `'open'`，在 `groups` 里加一个陈列，作品的 `cat` 填 `ranfang`，再把 `feature` 填成一件代表作的 id（前奏曲门面上就会换掉染布条，放这件作品）。
 - **换门面代表作**：改门类的 `feature`（作品 id）。有抠图（`cut`）的作品在门面上有立体效果。
 - **工作室栏目**：改 `studio`（介绍、参观须知、票价、预约说明）。照片放进 `assets/studio/`，在 `studio.photos` 里写 `{ src: 'studio/xxx.jpg', caption: '说明' }`。
