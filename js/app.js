@@ -86,13 +86,33 @@
     return box;
   };
   // 正文分段；整行写成【xx】或 #xx# 的显示为小标题
+  // 共创节选、对话这类语录收起来，和题诗一样点开才看
   var paragraphs = function (box, text) {
     box.textContent = '';
+    var target = box;
     String(text || '').split(/\n+/).forEach(function (t) {
       t = t.trim();
       if (!t) return;
       var h = t.match(/^【([^】]+)】$/) || t.match(/^#([^#]+)#?$/);
-      box.appendChild(h ? el('h4', 'ex-h', h[1]) : el('p', null, t));
+      if (!h) { target.appendChild(el('p', null, t)); return; }
+      target = box;
+      if (/共创|对话/.test(h[1])) {
+        var d = el('details', 'fold');
+        var s = el('summary');
+        s.appendChild(el('span', 'fold-title', h[1]));
+        s.appendChild(el('span', 'fold-count'));
+        d.appendChild(s);
+        target = el('div', 'fold-body');
+        d.appendChild(target);
+        box.appendChild(d);
+      } else {
+        box.appendChild(el('h4', 'ex-h', h[1]));
+      }
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('details.fold'), function (d) {
+      var n = d.querySelectorAll('.fold-body p').length;
+      if (!n) { d.remove(); return; }
+      d.querySelector('.fold-count').textContent = n + ' 句';
     });
   };
   // 缩略图缺失时自动回落到原图，作者新增作品不必手动做缩略图
