@@ -234,12 +234,58 @@
     var foot = el('span', 'cat-foot');
     // 陈列名逐个不折行，换行只发生在名字之间
     var groupsLine = el('span', 'cat-groups', soon ? '筹备中' : '');
-    (soon ? [] : c.groups || []).forEach(function (g) { groupsLine.appendChild(el('span', null, g.name)); });
+    var piles = c.piles || [];
+    (soon ? [] : piles.length ? piles : c.groups || []).forEach(function (g) { groupsLine.appendChild(el('span', null, g.name)); });
     foot.appendChild(groupsLine);
-    if (!soon) foot.appendChild(el('span', 'cat-count', n + ' 件'));
+    // 染坊按图堆陈列，数的是图片张数
+    var pics = piles.reduce(function (s, p) { return s + p.images.length; }, 0);
+    if (!soon) foot.appendChild(el('span', 'cat-count', piles.length ? pics + ' 张' : n + ' 件'));
     a.appendChild(foot);
     li.appendChild(a);
     catsBox.appendChild(li);
+  });
+
+  /* ---------- 照片大图：工作室照片、染坊图堆共用；多张时左右翻（按钮、方向键、手机左右滑） ---------- */
+  var lb = $('lightbox');
+  var gallery = { list: [], at: 0, label: '' };
+  var showGallery = function () {
+    var g = gallery, p = g.list[g.at], n = g.list.length;
+    var src = typeof p === 'string' ? p : p.src;
+    var cap = typeof p === 'string' ? '' : (p.caption || '');
+    $('lightbox-img').src = full(src);
+    $('lightbox-img').alt = cap || g.label;
+    $('lightbox-cap').textContent = cap;
+    $('lightbox-cap').hidden = !cap;
+    $('lightbox-count').textContent = n > 1 ? (g.at + 1) + ' / ' + n : '';
+    $('lightbox-prev').hidden = $('lightbox-next').hidden = n < 2;
+    $('lightbox-prev').disabled = g.at <= 0;
+    $('lightbox-next').disabled = g.at >= n - 1;
+  };
+  var openGallery = function (list, at, label) {
+    gallery = { list: list, at: at || 0, label: label || '' };
+    showGallery();
+    if (!lb.open) lb.showModal();
+  };
+  var stepGallery = function (d) {
+    var k = gallery.at + d;
+    if (k < 0 || k >= gallery.list.length) return;
+    gallery.at = k;
+    showGallery();
+  };
+  $('lightbox-prev').addEventListener('click', function () { stepGallery(-1); });
+  $('lightbox-next').addEventListener('click', function () { stepGallery(1); });
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target.id === 'lightbox-close' || e.target.tagName === 'FIGURE') lb.close(); });
+  lb.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') stepGallery(-1);
+    if (e.key === 'ArrowRight') stepGallery(1);
+  });
+  var lbX = null;
+  lb.addEventListener('touchstart', function (e) { lbX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (lbX === null) return;
+    var dx = e.changedTouches[0].clientX - lbX;
+    lbX = null;
+    if (Math.abs(dx) > 40) stepGallery(dx < 0 ? 1 : -1);
   });
 
   /* ---------- 主页：工作室 ---------- */
@@ -282,26 +328,19 @@
 
     // 照片：点开看大图
     var photos = $('studio-photos');
-    var lb = $('lightbox');
-    (S.photos || []).forEach(function (p) {
+    (S.photos || []).forEach(function (p, k) {
       var li = el('li');
       var b = el('button');
       b.type = 'button';
       b.setAttribute('aria-label', (p.caption || '工作室照片') + '，查看大图');
       b.appendChild(img(thumb(p.src), full(p.src), p.caption || ''));
-      b.addEventListener('click', function () {
-        $('lightbox-img').src = full(p.src);
-        $('lightbox-img').alt = p.caption || '工作室照片';
-        $('lightbox-cap').textContent = p.caption || '';
-        lb.showModal();
-      });
+      b.addEventListener('click', function () { openGallery(S.photos, k, '工作室照片'); });
       li.appendChild(b);
       if (p.caption) li.appendChild(el('span', 'studio-photo-cap', p.caption));
       photos.appendChild(li);
     });
     photos.hidden = !photos.children.length;
     photos.dataset.count = photos.children.length;  // 一两张时换成并排大图
-    lb.addEventListener('click', function (e) { if (e.target === lb || e.target.id === 'lightbox-close') lb.close(); });
 
     var facts = $('visit-facts');
     (S.visit || []).forEach(function (f) {
@@ -344,11 +383,49 @@
     jump.textContent = '';
     groupsBox.textContent = '';
 
-    if (c.status === 'soon' || !(c.groups || []).length) {
+    var piles = c.piles || [];
+    if (c.status === 'soon' || !((c.groups || []).length || piles.length)) {
       var empty = el('div', 'cat-empty');
       empty.appendChild(el('p', null, '这里还空着。'));
       groupsBox.appendChild(empty);
     }
+    // 染坊：按步骤分成几个图堆，左边一叠照片（点开左右翻），右边一段文字
+    piles.forEach(function (p, k) {
+      if (piles.length > 1) {
+        var chip = el('button', 'filter', p.name);
+        chip.type = 'button';
+        chip.appendChild(el('sup', null, String(p.images.length)));
+        chip.addEventListener('click', function () {
+          $('g-' + p.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        jump.appendChild(chip);
+      }
+      var sec = el('section', 'group pile');
+      sec.id = 'g-' + p.id;
+      var head = el('header', 'group-head');
+      var h = el('h2', 'group-title brush', p.name);
+      head.appendChild(h);
+      head.appendChild(el('span', 'group-meta', String.fromCharCode(65 + k) + ' · ' + (p.en ? p.en + ' · ' : '') + p.images.length + ' 张'));
+      sec.appendChild(head);
+      var body = el('div', 'pile-body');
+      var stack = el('button', 'pile-stack');
+      stack.type = 'button';
+      stack.setAttribute('aria-label', p.name + '，' + p.images.length + ' 张图，点开看');
+      p.images.slice(0, 3).forEach(function (src, j) {
+        var im = img(full(src), null, '');   // 染坊图不做缩略图，直接用原图
+        im.className = 'pile-img';
+        im.style.setProperty('--j', j);
+        stack.insertBefore(im, stack.firstChild);   // 第一张压在最上面
+      });
+      stack.appendChild(el('span', 'pile-hint', '点开看 ' + p.images.length + ' 张'));
+      stack.addEventListener('click', function () { openGallery(p.images, 0, p.name); });
+      body.appendChild(stack);
+      var text = el('div', 'pile-text');
+      String(p.text || '').split('\n').forEach(function (t) { if (t.trim()) text.appendChild(el('p', null, t.trim())); });
+      body.appendChild(text);
+      sec.appendChild(body);
+      groupsBox.appendChild(sec);
+    });
     (c.groups || []).forEach(function (g) {
       var list = inGroup(c.id, g.id);
       if (!list.length) return;
@@ -523,7 +600,7 @@
     $('ex-summary').hidden = !w.summary;
     paragraphs($('ex-note'), w.note);
     $('ex-note-wrap').hidden = !(w.note && w.note.trim());
-    renderPoems(w.poems || []);
+    renderPoems(w.poemsHidden ? [] : w.poems || []);
     $('ex-credit').textContent = [hasStageSlide(w) ? '第 1 张为展台合成图' : '', w.credit].filter(Boolean).join('；');
     // 有原帖链到原帖，没有就链到作者闲鱼主页
     var src = $('ex-source');
