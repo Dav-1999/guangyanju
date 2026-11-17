@@ -63,11 +63,11 @@ window.MUSEUM = {
     booking: '请提前半月预约，联系光盐居官方企业微信，与助理确定来访时间。'
   },
 
-  // 主页轮播（第一张固定放若尘花冠）；蓝蜻蜓（发光的海）单独从“光盐居”三个字下面飞出来，见 index.html 的 .hero-fly
-  hero: ['dust', 'ningye', 'lushen', 'luodian'],
+  // 主页轮播（珠宝篇和若尘花冠 2026-11-17 起暂不放进博物馆）；蓝蜻蜓（发光的海）单独从“光盐居”三个字下面飞出来，见 index.html 的 .hero-fly
+  hero: ['ningye', 'lushen', 'luodian'],
 
   // 次页 · 作品节选（作者还没定，先放这几件，改 id 即可）
-  featured: ['dust', 'xiuqiu', 'ruxue', 'ningye', 'luodian', 'feihuang', 'lushen', 'fanxing', 'mao'],
+  featured: ['xiuqiu', 'ruxue', 'ningye', 'luodian', 'feihuang', 'lushen', 'fanxing', 'mao'],
 
   /*
    * 前奏曲 · 四个门类
@@ -106,9 +106,43 @@ window.MUSEUM = {
       groups: [{ id: 'zhijin', name: '织锦入画', en: 'Framed Brocade' }]
     },
     {
-      id: 'ranfang', name: '草木染坊', en: 'Botanical Dyeing', status: 'soon',
-      intro: '草木染还在做，作品会陆续入馆。',
-      groups: []
+      id: 'ranfang', name: '草木染坊', en: 'Botanical Dyeing', status: 'open',
+      intro: '染料与衣服，经过反应，成为成品。',
+      about:
+        '数十种中草药花果木着色，晕在服饰之上简直是山川如画，自带出片滤镜和油画效果。\n' +
+        '在无尽斑斓色彩的形式之中，草木扎染绝对是最能创造睡莲梦境的一种。',
+      groups: [],
+      /*
+       * 染坊不按作品陈列，按步骤分成四个图堆，点开看图，不逐张介绍。
+       *   text    图堆旁边的文字（\n 分行）
+       *   images  图片（相对 assets/），第一张放在图堆最上面
+       */
+      piles: [
+        { id: 'cai', name: '染材', en: 'Dye Materials',
+          text: '虎杖、薯莨、苏木、蓝靛、石榴皮、茜草、栀子\n' +
+                '黄栌木、洛神花、密蒙花、核桃皮（青龙衣）、姜黄、艾草\n' +
+                '万寿菊、茜草根、板蓝根、紫/黄洋葱皮、槐米、红花、蝶豆花\n' +
+                '紫草、小叶紫檀、五倍子、黄柏、黑豆衣、茶叶、铁粉\n' +
+                '鸡血藤、金刚藤、黄花梨、龙血竭、咖啡渣、墨水树、山竹壳、柿漆',
+          images: ['works/ranfang-cai-1.jpg'] },
+        { id: 'shang', name: '染裳', en: 'Dyed Garments',
+          text: '不规则荷叶边、抹胸背心吊带、蕾丝花边腰封皮带、褶皱花苞、晨袍连衣裙、多层纱裙、三层蛋糕裙、挂脖一字肩、高腰露背、斜摆、花朵鱼骨\n' +
+                '短袖上衣、背心、衬衫\n' +
+                '帆布包、丝巾、袜子\n' +
+                '布料、纸',
+          images: ['works/ranfang-shang-1.jpg'] },
+        { id: 'cheng', name: '染程', en: 'Process',
+          text: '发酵起缸　熬制提取　高浓度染液\n' +
+                '明矾作媒染剂　面料预处理　不使用重金属媒染剂\n' +
+                '扎染、套色、复洗、蒸煮、晾晒\n' +
+                '锈染　茶染　柿染',
+          images: ['works/ranfang-cheng-1.jpg', 'works/ranfang-cheng-2.jpg'] },
+        { id: 'yi', name: '衣染', en: 'Colour on Cloth',
+          text: '不同的染料、不同的面料、\n' +
+                '不同的技法、不同的套色\n' +
+                '汇聚成千变万化的服饰色彩美学',
+          images: ['works/ranfang-yi-1.jpg'] }
+      ]
     },
     {
       id: 'qidian', name: '漆钿', en: 'Lacquer & Inlay', status: 'open',
@@ -143,20 +177,9 @@ window.MUSEUM = {
    *   poems     收藏者题诗 [{ date, title, text, by }]：详情页里一篇一行（日期 + 标题或首句），点开看全文；
    *             text 里单个换行是分行、空一行是分节；title、by（出处，如“李煜《相见欢》”）可不写；
    *             quote: { text, from } 是诗里引用的别人的文字，诗末单独显示并注明出处
+   *   poemsHidden  true 时题诗先不显示（数据保留）
    */
   works: [
-    /* ---------- 珠宝篇：只放若尘花冠的图片 ---------- */
-    {
-      id: 'dust', cat: '',
-      stage: 'works/dust-4-stage.jpg', cut: 'works/dust-4-cut.webp',
-      series: '珠宝篇', title: '若尘', subtitle: '传世花冠',
-      glow: '#7fb7d9',
-      summary:
-        '野花惊目，繁星若尘。',
-      images: ['works/dust-4.jpg', 'works/dust-5.jpg', 'works/dust-1.jpg', 'works/dust-7.jpg',
-               'works/dust-2.jpg', 'works/dust-3.jpg', 'works/dust-6.jpg', 'works/dust-8.jpg',
-               'works/dust-9.jpg']
-    },
 
     /* ================= 绒花 · 绒绒萌物 ================= */
     {
@@ -277,6 +300,7 @@ window.MUSEUM = {
     },
     {
       id: 'xueyi', cat: 'ronghua', group: 'huanyu',
+      poemsHidden: true,   // 题诗先隐藏（2026-11-17），改成 false 或删掉这一行就重新显示
       stage: 'works/butterfly-stage.jpg', cut: 'works/butterfly-cut.webp',
       title: '血蝶', subtitle: '血漪蛱蝶',
       glow: '#c8202b',
