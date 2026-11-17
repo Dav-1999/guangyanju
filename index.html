@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#060606">
   <meta property="og:title" content="光盐居 · 线上博物馆">
   <meta property="og:description" content="万物璀璨。光盐居的绒花、织锦画与螺钿画。">
-  <meta property="og:image" content="assets/works/dust-4.jpg">
+  <meta property="og:image" content="assets/works/ningye-1.jpg">
   <link rel="icon" href="assets/brand/mark.png">
   <link rel="preload" href="fonts/brush.woff" as="font" type="font/woff" crossorigin>
   <!-- 网络字体为锦上添花：加载不到（例如国内网络）时自动回落到系统宋体，不阻塞页面 -->
@@ -218,12 +218,15 @@
     </div>
   </dialog>
 
-  <!-- 工作室照片大图 -->
+  <!-- 照片大图（工作室照片、染坊图堆）：多张时可左右翻 -->
   <dialog class="lightbox" id="lightbox" aria-label="照片">
     <figure>
       <img id="lightbox-img" alt="">
       <figcaption id="lightbox-cap"></figcaption>
     </figure>
+    <button class="ex-arrow prev" id="lightbox-prev" type="button" aria-label="上一张">‹</button>
+    <button class="ex-arrow next" id="lightbox-next" type="button" aria-label="下一张">›</button>
+    <div class="lightbox-count latin" id="lightbox-count" aria-live="polite"></div>
     <button class="ex-close" id="lightbox-close" type="button" aria-label="关闭">×</button>
   </dialog>
 
